@@ -1,0 +1,30 @@
+{
+    "title": "Book",
+    "$id": "book",
+    "description": "A global book configuration object",
+    "type": "object",
+    "properties": {
+        "bookTitle": {
+            "description": "The title of the book",
+            "type": "string"
+        },
+        "bookAuthor": {
+            "description": "The author of the book",
+            "type": "string"
+        },
+        "sections": {
+            "description": "A list of sections that contain chapters",
+            "type": "array",
+            "items": {
+                "type": "string"
+            }
+        },
+        "chapters": {
+            "description": "A list of chapters",
+            "type": "array",
+            "items": {
+                "$ref": "chapter#"
+            }
+        }
+    }
+}

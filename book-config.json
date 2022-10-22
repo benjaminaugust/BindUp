@@ -1,0 +1,18 @@
+{
+  "bookTitle": "Perjure, Book 2: Descendants of the Darkness",
+  "bookAuthor": "Benjamin August",
+  "chapters": [
+    {
+      "title": "Chapter 1",
+      "contentPath": "./testbook/chapter-1.md"
+    },
+    {
+      "title":"Chapter 2",
+      "contentPath": "./testbook/chapter-3.md"
+    },
+    {
+      "title":"Chapter 3",
+      "contentPath":"./testbook/chapter-2.md"
+    }
+  ]
+}
