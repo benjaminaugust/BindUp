@@ -3,7 +3,19 @@
   "$id": "book",
   "description": "A global book configuration object",
   "type": "object",
+  "required": [
+    "bookTitle",
+    "bookAuthor",
+    "formats",
+    "chapters"
+  ],
   "properties": {
+    "formats": {
+      "type":"array",
+      "items": {
+        "type": "string"
+      }
+    },
     "bookTitle": {
       "description": "The title of the book",
       "type": "string"
@@ -16,7 +28,22 @@
       "description": "A list of sections that contain chapters",
       "type": "array",
       "items": {
-        "type": "string"
+        "type": "object",
+        "required": [
+          "title",
+          "appearsBefore"
+        ],
+        "properties": {
+          "title": {
+            "type":"string"
+          },
+          "appearsBefore": {
+            "type":"string"
+          },
+          "content": {
+            "type":"string"
+          }
+        }
       }
     },
     "chapters": {

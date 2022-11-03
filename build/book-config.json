@@ -1,6 +1,16 @@
 {
-    "bookTitle": "Perjure, Book 2: Descendants of the Darkness",
+    "formats": [
+        "epub"
+    ],
+    "bookTitle": "Await, Book 2: Descendants of the Darkness",
     "bookAuthor": "Benjamin August",
+    "sections": [
+        {
+            "title": "Section 1",
+            "appearsBefore": "Chapter 1",
+            "content": "./testbook/section-1.md"
+        }
+    ],
     "chapters": [
         {
             "title": "Chapter 1",

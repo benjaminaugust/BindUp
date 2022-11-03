@@ -3,6 +3,10 @@
     "title": "Chapter",
     "description": "A chapter in a Book",
     "type": "object",
+    "required": [
+        "title",
+        "contentPath"
+    ],
     "properties": {
         "title": {
             "description": "The title of the chapter",

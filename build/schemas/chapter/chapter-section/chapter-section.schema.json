@@ -4,11 +4,11 @@
     "description": "A section in a chapter",
     "type": "object",
     "properties": {
-        "chapterSectionTitle": {
+        "title": {
             "description": "The title of the chapter section",
             "type": "string"
         },
-        "chapterSectionAuthor": {
+        "author": {
             "description": "The author of the chapter section",
             "type": "string"
         },
