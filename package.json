@@ -20,11 +20,15 @@
     "@types/node": "^18.8.2",
     "ajv": "^8.11.0",
     "epub-gen-memory": "^1.0.9",
+    "fs-readdir-recursive": "^1.1.0",
     "nodemon": "^2.0.20",
-    "showdown": "^2.1.0"
+    "showdown": "^2.1.0",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "@types/fs-readdir-recursive": "^1.1.0",
     "@types/showdown": "^2.0.0",
+    "@types/uuid": "^8.3.4",
     "husky": "^8.0.1",
     "prettier": "2.7.1",
     "pretty-quick": "^3.1.3",

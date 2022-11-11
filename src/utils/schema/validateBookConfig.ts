@@ -5,8 +5,10 @@ import _bookConfigJSON from '../../../book-config.json';
 export const validateBookConfig = (ajv: AJV, bookConfig: BookConfig): boolean => {
   const validate = ajv.getSchema('book')
 
-  if (!validate)
-    return console.log("Validate broke")
+  if (!validate) {
+    console.log("Validate broke")
+    return false;
+  }
 
   if (validate(bookConfig)) {
     console.log('Success validating');

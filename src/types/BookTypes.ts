@@ -11,7 +11,8 @@ export type BookConfig = {
   bookTitle: string,
   bookAuthor: string,
   chapters: Chapter[],
-  sections?: Section[]
+  sections?: Section[],
+  manuscript: string
 };
 
 export type Section = {
@@ -32,3 +33,14 @@ export type ChapterSection = {
   author?: string,
   contentPath?: string,
 }
+
+export type ConvertedItem = {
+  title?: string,
+  content?: string,
+  id: string
+}
+
+export type ConvertedContent = {
+  chapters?: ConvertedItem[] | null
+  sections?: ConvertedItem[] | null,
+};

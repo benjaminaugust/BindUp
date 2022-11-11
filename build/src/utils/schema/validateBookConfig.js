@@ -3,8 +3,10 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateBookConfig = void 0;
 const validateBookConfig = (ajv, bookConfig) => {
     const validate = ajv.getSchema('book');
-    if (!validate)
-        return console.log("Validate broke");
+    if (!validate) {
+        console.log("Validate broke");
+        return false;
+    }
     if (validate(bookConfig)) {
         console.log('Success validating');
         return true;

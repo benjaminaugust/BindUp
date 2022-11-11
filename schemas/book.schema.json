@@ -7,9 +7,11 @@
     "bookTitle",
     "bookAuthor",
     "formats",
-    "chapters"
+    "chapters",
+    "manuscript"
   ],
   "properties": {
+    "manuscript": {"type":"string"},
     "formats": {
       "type":"array",
       "items": {

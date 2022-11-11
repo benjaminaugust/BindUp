@@ -13,38 +13,80 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const showdown_1 = __importDefault(require("showdown"));
-const promises_1 = __importDefault(require("fs/promises"));
 const BookTypes_1 = require("../../types/BookTypes");
 const exportEpub_1 = __importDefault(require("./exportEpub"));
+const uuid_1 = require("uuid");
+const path_1 = __importDefault(require("path"));
+const fs_readdir_recursive_1 = __importDefault(require("fs-readdir-recursive"));
 exports.default = (bookConfig) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const convertedContent = yield markdownToHtml(bookConfig);
-        yield exportBasedOnFormat(bookConfig, convertedContent);
-        // await exportEpub(bookConfig, convertedContent);
+        const manPath = path_1.default.join('', bookConfig.manuscript);
+        // console.log(JSON.stringify(await fs.readdir(manPath, { withFileTypes: true }), null, 2))
+        /*
+        1. Read directory recursively
+        2. Create an array to store items
+        3. For each item, check what's next to every '\\'
+        4. If it's already in the items array, ignore it
+        5. If not, add it
+        6. Regardless, trim everything from `\\` and back to index position 0
+        7. Repeat the process
+        */
+        const rawContents = (0, fs_readdir_recursive_1.default)(manPath);
+        const chapterArray = [];
+        const directoryList = rawContents.map(item => item.replace('manuscript\\', ''));
+        console.log(directoryList);
+        // just use split, then filter
+        directoryList.forEach(item => {
+            item.split('\\')
+                .map(segment => {
+                const splits = segment.split('- ');
+                return splits.length > 1 ?
+                    splits.filter((split, i) => i > 0).join()
+                    :
+                        splits.toString();
+            })
+                .forEach(segment => {
+                !chapterArray.some(chapter => chapter.title === segment) &&
+                    chapterArray.push({
+                        title: segment,
+                        path: item
+                    });
+            });
+            // const splitItem = (i: any) => {
+            //   console.log("This is what we're splitting", i)
+            //   const start = i.indexOf('- ') + 2;
+            //   const end = i.indexOf("\\");
+            //   console.log("\n\nThis is at the start index", i[start])
+            //   const newItem = i.slice(start, end);
+            //   console.log("\n\nNew split", newItem + '\n\n')
+            //   return newItem;
+            // }
+            // let split = splitItem(item);
+            // const start = item.indexOf(split) + split.length
+            // console.log("Next part", item.slice(start))//splitItem(item.slice(start)))
+            // split = splitItem(item.slice(start))
+            // console.log("\n\nSplit of next part", split)
+            // if (split.includes('.md'))
+            //   return chapterArray.push(split);
+            // // while (!split.includes('.md')) {
+            // if (!chapterArray.includes(split))
+            //   chapterArray.push(split)
+            // // }
+        });
+        console.log(chapterArray);
     }
     catch (err) {
         console.log('Failed to generate ebook.', err);
     }
 });
+const makeContentItemId = (title) => {
+    return title + `-${(0, uuid_1.v4)()}-`;
+};
 const markdownToHtml = (bookConfig) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!(bookConfig === null || bookConfig === void 0 ? void 0 : bookConfig.manuscript))
+        throw new Error(`No manuscript path defined in Book Config:\n\n${bookConfig}`);
     const converter = new showdown_1.default.Converter();
-    const convertedChapters = yield Promise.all(bookConfig.chapters.map((chapter) => __awaiter(void 0, void 0, void 0, function* () {
-        if (!(chapter === null || chapter === void 0 ? void 0 : chapter.contentPath))
-            throw new Error(`Undefined content path in chapter:\n\n${chapter}`);
-        const contentFile = yield promises_1.default.readFile(chapter.contentPath);
-        return converter.makeHtml(contentFile.toString());
-    })));
-    const convertedSections = (bookConfig === null || bookConfig === void 0 ? void 0 : bookConfig.sections) &&
-        (yield Promise.all(bookConfig.sections.map((sections) => __awaiter(void 0, void 0, void 0, function* () {
-            if (!(sections === null || sections === void 0 ? void 0 : sections.content))
-                throw new Error(`Undefined content path in chapter:\n\n${sections}`);
-            const contentFile = yield promises_1.default.readFile(sections.content);
-            return converter.makeHtml(contentFile.toString());
-        }))));
-    return {
-        convertedChapters,
-        convertedSections
-    };
+    // We need to recursively list all folders within manuscript and create chapters for them.
 });
 const exportBasedOnFormat = (bookConfig, convertedContent) => __awaiter(void 0, void 0, void 0, function* () {
     const { formats } = bookConfig;

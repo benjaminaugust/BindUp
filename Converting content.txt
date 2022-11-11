@@ -1,0 +1,33 @@
+Converting content
+
+- To convert content we need the filename, content, and titles
+
+THERE ARE NO CHAPTER FOLDERS OR SECTIONS IN EPUBS. Everything is just a chapter. Everything. Including section names. It's all an abstraction in the reader's head.
+
+
+We don't need any explicit config to tell us what are folders or fucking chapters. None of that stuff is anything anyway in the final file.
+
+We just take the order of your stuff based on a number and a dash. So you can go:
+
+manuscript
+  1- Integration
+    1- Chapter1
+      1- *
+      2- 1
+      3- 2
+      4- 3
+    2- Chapter2
+    3- Chapter3
+  2- Cohabitation
+    4- Chapter 4
+
+That will get rendered out perfectly.
+
+To get all the book info:
+- Update book config schema, because it just needs to tell us where to find the manuscript directory
+
+To render out the book:
+- Look for manuscript directory
+- Recursively go through every directory within manuscript, in order
+
+book config should be where we choose like, the font, the spacing (for each format), book cover, etc. Not where we inform the sbg what chapters are called and shit, come on

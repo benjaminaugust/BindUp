@@ -1,37 +1,29 @@
+import { ConvertedContent } from './../../types/BookTypes';
 import epub from 'epub-gen-memory';
 import { BookConfig } from '../../types/BookTypes';
 import fs from 'fs/promises';
 
 
-export default async (bookConfig: BookConfig, convertedContent: object) => {
+export default async (bookConfig: BookConfig, convertedContent: ConvertedContent) => {
 
-  const sectionArray =
-    bookConfig?.sections &&
-    bookConfig.sections.map((sections, index) => ({
-      title: sections.title,
-      content: convertedContent?.convertedChapters[index],
-      filename: sections.title,
-    }))
+  // const chapterArray = [];
 
+  // if (!convertedContent?.chapters)
+  //   throw new Error("No chapters found when converting to Epub!")
 
-  const chapterArray = bookConfig.chapters.map((chapter, index) => ({
-    title: chapter.title,
-    content: convertedContentArray[index],
-    filename: chapter.title,
-  }))
+  // // We need to check for sections. If they exist, insert them into the array 
+  // console.log(bookConfig.bookTitle)
 
-  console.log(bookConfig.bookTitle)
+  // try {
+  //   const content = await epub({
+  //     title: bookConfig.bookTitle ?? "No title provided",
+  //     author: bookConfig.bookAuthor ?? "No author provided"
+  //   },
+  //     chapterArray);
 
-  try {
-    const content = await epub({
-      title: bookConfig.bookTitle ?? "No title provided",
-      author: bookConfig.bookAuthor ?? "No author provided"
-    },
-      chapterArray);
-
-    // fs.writeFile(`${bookConfig.bookTitle.replace(' ', '-').replace(':', '').replace(',', '')}`, content);
-    console.log("Ebook Generated Successfully!");
-  } catch (err) {
-    console.error("Failed to generate Ebook because of ", err)
-  }
+  //   // fs.writeFile(`${bookConfig.bookTitle.replace(' ', '-').replace(':', '').replace(',', '')}`, content);
+  //   console.log("Ebook Generated Successfully!");
+  // } catch (err) {
+  //   console.error("Failed to generate Ebook because of ", err)
+  // }
 }
