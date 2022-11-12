@@ -29,7 +29,7 @@ export default async (bookConfig: BookConfig): Promise<void> => {
 
     const directoryList = rawContents.map(item => item.replace('manuscript\\', ''));
 
-    console.log(directoryList)
+    // console.log(directoryList)
     // just use split, then filter
 
     directoryList.forEach(item => {
@@ -44,39 +44,16 @@ export default async (bookConfig: BookConfig): Promise<void> => {
         .forEach(segment => {
           !chapterArray.some(chapter => chapter.title === segment) &&
             chapterArray.push({
-              title: segment,
-              path: item
+              title: segment.replace('.md', ''),
+              path: item,
+              isSection: !segment.includes('.md')
             })
         });
-      // const splitItem = (i: any) => {
-      //   console.log("This is what we're splitting", i)
-      //   const start = i.indexOf('- ') + 2;
-      //   const end = i.indexOf("\\");
-      //   console.log("\n\nThis is at the start index", i[start])
-      //   const newItem = i.slice(start, end);
-      //   console.log("\n\nNew split", newItem + '\n\n')
-      //   return newItem;
-      // }
-
-      // let split = splitItem(item);
-      // const start = item.indexOf(split) + split.length
-      // console.log("Next part", item.slice(start))//splitItem(item.slice(start)))
-      // split = splitItem(item.slice(start))
-      // console.log("\n\nSplit of next part", split)
-
-      // if (split.includes('.md'))
-      //   return chapterArray.push(split);
-
-      // // while (!split.includes('.md')) {
-      // if (!chapterArray.includes(split))
-      //   chapterArray.push(split)
-
-      // // }
-
     });
 
-    console.log(chapterArray)
-
+    // console.log(chapterArray)
+    const convertedChapters = await markdownToHtml(chapterArray)
+    exportBasedOnFormat(bookConfig, convertedChapters)
   } catch (err) {
     console.log('Failed to generate ebook.', err);
   }
@@ -86,19 +63,27 @@ const makeContentItemId = (title: string): string => {
   return title + `-${uuidv4()}-`;
 }
 
-const markdownToHtml = async (bookConfig: BookConfig): Promise<any> => {
-
-  if (!bookConfig?.manuscript)
-    throw new Error(`No manuscript path defined in Book Config:\n\n${bookConfig}`);
-
+const markdownToHtml = async (chapterArray: any[]): Promise<any> => {
   const converter = new showdown.Converter();
 
   // We need to recursively list all folders within manuscript and create chapters for them.
 
+  return Promise.all(chapterArray.map(async chapter => {
+    const convertedChapter = {
+      ...chapter,
+      content: '',
+    }
+    if (chapter.isSection) {
+      return convertedChapter
+    }
+    const content = await fs.readFile(`testbook\\manuscript\\${chapter.path}`)
+    convertedChapter.content = converter.makeHtml(content.toString())
+    return convertedChapter
+  }))
 
 }
 
-const exportBasedOnFormat = async (bookConfig: BookConfig, convertedContent: ConvertedContent) => {
+const exportBasedOnFormat = async (bookConfig: BookConfig, convertedContent: any) => {
 
   const { formats } = bookConfig;
 

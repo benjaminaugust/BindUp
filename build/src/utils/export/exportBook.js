@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const showdown_1 = __importDefault(require("showdown"));
+const promises_1 = __importDefault(require("fs/promises"));
 const BookTypes_1 = require("../../types/BookTypes");
 const exportEpub_1 = __importDefault(require("./exportEpub"));
 const uuid_1 = require("uuid");
@@ -34,7 +35,7 @@ exports.default = (bookConfig) => __awaiter(void 0, void 0, void 0, function* ()
         const rawContents = (0, fs_readdir_recursive_1.default)(manPath);
         const chapterArray = [];
         const directoryList = rawContents.map(item => item.replace('manuscript\\', ''));
-        console.log(directoryList);
+        // console.log(directoryList)
         // just use split, then filter
         directoryList.forEach(item => {
             item.split('\\')
@@ -48,32 +49,15 @@ exports.default = (bookConfig) => __awaiter(void 0, void 0, void 0, function* ()
                 .forEach(segment => {
                 !chapterArray.some(chapter => chapter.title === segment) &&
                     chapterArray.push({
-                        title: segment,
-                        path: item
+                        title: segment.replace('.md', ''),
+                        path: item,
+                        isSection: !segment.includes('.md')
                     });
             });
-            // const splitItem = (i: any) => {
-            //   console.log("This is what we're splitting", i)
-            //   const start = i.indexOf('- ') + 2;
-            //   const end = i.indexOf("\\");
-            //   console.log("\n\nThis is at the start index", i[start])
-            //   const newItem = i.slice(start, end);
-            //   console.log("\n\nNew split", newItem + '\n\n')
-            //   return newItem;
-            // }
-            // let split = splitItem(item);
-            // const start = item.indexOf(split) + split.length
-            // console.log("Next part", item.slice(start))//splitItem(item.slice(start)))
-            // split = splitItem(item.slice(start))
-            // console.log("\n\nSplit of next part", split)
-            // if (split.includes('.md'))
-            //   return chapterArray.push(split);
-            // // while (!split.includes('.md')) {
-            // if (!chapterArray.includes(split))
-            //   chapterArray.push(split)
-            // // }
         });
-        console.log(chapterArray);
+        // console.log(chapterArray)
+        const convertedChapters = yield markdownToHtml(chapterArray);
+        exportBasedOnFormat(bookConfig, convertedChapters);
     }
     catch (err) {
         console.log('Failed to generate ebook.', err);
@@ -82,11 +66,18 @@ exports.default = (bookConfig) => __awaiter(void 0, void 0, void 0, function* ()
 const makeContentItemId = (title) => {
     return title + `-${(0, uuid_1.v4)()}-`;
 };
-const markdownToHtml = (bookConfig) => __awaiter(void 0, void 0, void 0, function* () {
-    if (!(bookConfig === null || bookConfig === void 0 ? void 0 : bookConfig.manuscript))
-        throw new Error(`No manuscript path defined in Book Config:\n\n${bookConfig}`);
+const markdownToHtml = (chapterArray) => __awaiter(void 0, void 0, void 0, function* () {
     const converter = new showdown_1.default.Converter();
     // We need to recursively list all folders within manuscript and create chapters for them.
+    return Promise.all(chapterArray.map((chapter) => __awaiter(void 0, void 0, void 0, function* () {
+        const convertedChapter = Object.assign(Object.assign({}, chapter), { content: '' });
+        if (chapter.isSection) {
+            return convertedChapter;
+        }
+        const content = yield promises_1.default.readFile(`testbook\\manuscript\\${chapter.path}`);
+        convertedChapter.content = converter.makeHtml(content.toString());
+        return convertedChapter;
+    })));
 });
 const exportBasedOnFormat = (bookConfig, convertedContent) => __awaiter(void 0, void 0, void 0, function* () {
     const { formats } = bookConfig;

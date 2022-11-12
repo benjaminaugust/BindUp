@@ -4,7 +4,7 @@ import { BookConfig } from '../../types/BookTypes';
 import fs from 'fs/promises';
 
 
-export default async (bookConfig: BookConfig, convertedContent: ConvertedContent) => {
+export default async (bookConfig: BookConfig, convertedContent: any) => {
 
   // const chapterArray = [];
 
@@ -14,16 +14,16 @@ export default async (bookConfig: BookConfig, convertedContent: ConvertedContent
   // // We need to check for sections. If they exist, insert them into the array 
   // console.log(bookConfig.bookTitle)
 
-  // try {
-  //   const content = await epub({
-  //     title: bookConfig.bookTitle ?? "No title provided",
-  //     author: bookConfig.bookAuthor ?? "No author provided"
-  //   },
-  //     chapterArray);
+  try {
+    const content = await epub({
+      title: bookConfig.bookTitle ?? "No title provided",
+      author: bookConfig.bookAuthor ?? "No author provided"
+    }, convertedContent
+    );
 
-  //   // fs.writeFile(`${bookConfig.bookTitle.replace(' ', '-').replace(':', '').replace(',', '')}`, content);
-  //   console.log("Ebook Generated Successfully!");
-  // } catch (err) {
-  //   console.error("Failed to generate Ebook because of ", err)
-  // }
+    fs.writeFile(`${bookConfig.bookTitle.replace(' ', '-').replace(':', '').replace(',', '')}`, content);
+    console.log("Ebook Generated Successfully!");
+  } catch (err) {
+    console.error("Failed to generate Ebook because of ", err)
+  }
 }
