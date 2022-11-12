@@ -1,6 +1,6 @@
 {
     "formats": [
-        "epub"
+        "pdf"
     ],
     "manuscript": "./testbook",
     "bookTitle": "Better, Book 2: Descendants of the Darkness",

@@ -1,7 +1,6 @@
 export enum Format {
   epub = "epub",
   html = "html",
-  mobi = "mobi",
   pdf = "pdf",
   docx = "docx",
 }

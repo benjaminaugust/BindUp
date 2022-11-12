@@ -3,15 +3,14 @@ import showdown from "showdown";
 import fs from 'fs/promises';
 import { Format } from "../../types/BookTypes";
 import exportEpub from './exportEpub';
-import { v4 as uuidv4 } from 'uuid';
 import path from 'path';
 import readdirRecursive from 'fs-readdir-recursive'
+import exportMobi from './exportMobi';
+import exportPDF from './exportPDF';
 
 export default async (bookConfig: BookConfig): Promise<void> => {
   try {
     const manPath = path.join('', bookConfig.manuscript)
-
-    // console.log(JSON.stringify(await fs.readdir(manPath, { withFileTypes: true }), null, 2))
 
     /*
     1. Read directory recursively
@@ -28,9 +27,6 @@ export default async (bookConfig: BookConfig): Promise<void> => {
     const chapterArray: any[] = [];
 
     const directoryList = rawContents.map(item => item.replace('manuscript\\', ''));
-
-    // console.log(directoryList)
-    // just use split, then filter
 
     directoryList.forEach(item => {
       item.split('\\')
@@ -51,16 +47,11 @@ export default async (bookConfig: BookConfig): Promise<void> => {
         });
     });
 
-    // console.log(chapterArray)
     const convertedChapters = await markdownToHtml(chapterArray)
     exportBasedOnFormat(bookConfig, convertedChapters)
   } catch (err) {
     console.log('Failed to generate ebook.', err);
   }
-}
-
-const makeContentItemId = (title: string): string => {
-  return title + `-${uuidv4()}-`;
 }
 
 const markdownToHtml = async (chapterArray: any[]): Promise<any> => {
@@ -94,6 +85,9 @@ const exportBasedOnFormat = async (bookConfig: BookConfig, convertedContent: any
     switch (thisFormat) {
       case Format.epub:
         await exportEpub(bookConfig, convertedContent);
+        break;
+      case Format.pdf:
+        await exportPDF(bookConfig, convertedContent);
         break;
     }
   })

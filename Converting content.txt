@@ -31,3 +31,12 @@ To render out the book:
 - Recursively go through every directory within manuscript, in order
 
 book config should be where we choose like, the font, the spacing (for each format), book cover, etc. Not where we inform the sbg what chapters are called and shit, come on
+
+PDF:
+
+- It did work, but we need to detect when something is a section and fill that page with its title, not its empty content
+  - Alternatively, make its content its title, then in the epub exporting module just detect when it's a section and don't add content. Might be easier for the PDF part
+
+- It is not parsing html or markdown in the PDF's. Might just drop PDF support for now. Kinda shit.
+
+- DOCX

@@ -16,13 +16,12 @@ const showdown_1 = __importDefault(require("showdown"));
 const promises_1 = __importDefault(require("fs/promises"));
 const BookTypes_1 = require("../../types/BookTypes");
 const exportEpub_1 = __importDefault(require("./exportEpub"));
-const uuid_1 = require("uuid");
 const path_1 = __importDefault(require("path"));
 const fs_readdir_recursive_1 = __importDefault(require("fs-readdir-recursive"));
+const exportPDF_1 = __importDefault(require("./exportPDF"));
 exports.default = (bookConfig) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const manPath = path_1.default.join('', bookConfig.manuscript);
-        // console.log(JSON.stringify(await fs.readdir(manPath, { withFileTypes: true }), null, 2))
         /*
         1. Read directory recursively
         2. Create an array to store items
@@ -35,8 +34,6 @@ exports.default = (bookConfig) => __awaiter(void 0, void 0, void 0, function* ()
         const rawContents = (0, fs_readdir_recursive_1.default)(manPath);
         const chapterArray = [];
         const directoryList = rawContents.map(item => item.replace('manuscript\\', ''));
-        // console.log(directoryList)
-        // just use split, then filter
         directoryList.forEach(item => {
             item.split('\\')
                 .map(segment => {
@@ -55,7 +52,6 @@ exports.default = (bookConfig) => __awaiter(void 0, void 0, void 0, function* ()
                     });
             });
         });
-        // console.log(chapterArray)
         const convertedChapters = yield markdownToHtml(chapterArray);
         exportBasedOnFormat(bookConfig, convertedChapters);
     }
@@ -63,9 +59,6 @@ exports.default = (bookConfig) => __awaiter(void 0, void 0, void 0, function* ()
         console.log('Failed to generate ebook.', err);
     }
 });
-const makeContentItemId = (title) => {
-    return title + `-${(0, uuid_1.v4)()}-`;
-};
 const markdownToHtml = (chapterArray) => __awaiter(void 0, void 0, void 0, function* () {
     const converter = new showdown_1.default.Converter();
     // We need to recursively list all folders within manuscript and create chapters for them.
@@ -87,6 +80,9 @@ const exportBasedOnFormat = (bookConfig, convertedContent) => __awaiter(void 0, 
         switch (thisFormat) {
             case BookTypes_1.Format.epub:
                 yield (0, exportEpub_1.default)(bookConfig, convertedContent);
+                break;
+            case BookTypes_1.Format.pdf:
+                yield (0, exportPDF_1.default)(bookConfig, convertedContent);
                 break;
         }
     }));
