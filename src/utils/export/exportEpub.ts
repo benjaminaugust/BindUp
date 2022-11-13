@@ -15,13 +15,19 @@ export default async (bookConfig: BookConfig, convertedContent: any) => {
   // console.log(bookConfig.bookTitle)
 
   try {
-    const content = await epub({
-      title: bookConfig.bookTitle ?? "No title provided",
-      author: bookConfig.bookAuthor ?? "No author provided"
-    }, convertedContent
+    const content = await epub(
+      { ...bookConfig },
+      convertedContent
     );
 
-    fs.writeFile(`${bookConfig.bookTitle.replace(' ', '-').replace(':', '').replace(',', '')}`, content);
+    fs.writeFile(
+      `${bookConfig.title
+        .replace(' ', '-')
+        .replace(':', '')
+        .replace(',', '')
+      }`,
+      content
+    );
     console.log("Ebook Generated Successfully!");
   } catch (err) {
     console.error("Failed to generate Ebook because of ", err)

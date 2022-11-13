@@ -1,29 +1,8 @@
 {
   "formats": [
-      "pdf"
+      "epub"
   ],
   "manuscript": "./testbook",
-  "bookTitle": "Better, Book 2: Descendants of the Darkness",
-  "bookAuthor": "Benjamin August",
-  "sections": [
-      {
-          "title":"Section 1",
-          "appearsBefore":"Chapter 1",
-          "content":"./testbook/section-1.md"
-      }
-  ],
-  "chapters": [
-      {
-          "title": "Chapter 1",
-          "contentPath": "./testbook/chapter-1.md"
-      },
-      {
-          "title": "Chapter 2",
-          "contentPath": "./testbook/chapter-3.md"
-      },
-      {
-          "title": "Chapter 3",
-          "contentPath": "./testbook/chapter-2.md"
-      }
-  ]
+  "title": "yu, Book 1: Descendants of the Darkness",
+  "author": "Benjamin August"
 }

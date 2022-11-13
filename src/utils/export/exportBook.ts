@@ -5,8 +5,6 @@ import { Format } from "../../types/BookTypes";
 import exportEpub from './exportEpub';
 import path from 'path';
 import readdirRecursive from 'fs-readdir-recursive'
-import exportMobi from './exportMobi';
-import exportPDF from './exportPDF';
 
 export default async (bookConfig: BookConfig): Promise<void> => {
   try {
@@ -33,7 +31,7 @@ export default async (bookConfig: BookConfig): Promise<void> => {
         .map(segment => {
           const splits = segment.split('- ');
           return splits.length > 1 ?
-            splits.filter((split, i) => i > 0).join()
+            splits.filter((_, i) => i > 0).join()
             :
             splits.toString()
         })
@@ -85,9 +83,6 @@ const exportBasedOnFormat = async (bookConfig: BookConfig, convertedContent: any
     switch (thisFormat) {
       case Format.epub:
         await exportEpub(bookConfig, convertedContent);
-        break;
-      case Format.pdf:
-        await exportPDF(bookConfig, convertedContent);
         break;
     }
   })

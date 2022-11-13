@@ -1,5 +1,7 @@
 Converting content
 
+FOR NOW: Only epub
+
 - To convert content we need the filename, content, and titles
 
 THERE ARE NO CHAPTER FOLDERS OR SECTIONS IN EPUBS. Everything is just a chapter. Everything. Including section names. It's all an abstraction in the reader's head.
