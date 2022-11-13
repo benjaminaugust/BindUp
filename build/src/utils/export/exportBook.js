@@ -36,9 +36,9 @@ exports.default = (bookConfig) => __awaiter(void 0, void 0, void 0, function* ()
         directoryList.forEach(item => {
             item.split('\\')
                 .map(segment => {
-                const splits = segment.split('- ');
+                const splits = segment.split('~ ');
                 return splits.length > 1 ?
-                    splits.filter((split, i) => i > 0).join()
+                    splits.filter((_, i) => i > 0).join()
                     :
                         splits.toString();
             })

@@ -29,7 +29,7 @@ export default async (bookConfig: BookConfig): Promise<void> => {
     directoryList.forEach(item => {
       item.split('\\')
         .map(segment => {
-          const splits = segment.split('- ');
+          const splits = segment.split('~ ');
           return splits.length > 1 ?
             splits.filter((_, i) => i > 0).join()
             :
