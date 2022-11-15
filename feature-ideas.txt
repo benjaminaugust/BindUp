@@ -1,3 +1,0 @@
-- Use an npm package for emailing mobis to the user's kindle email. Allows them to have the file immediately sent to their kindle. Even better if you can use an array of emails and send it out to their list of preview readers.
-
-- Ability to generate review copies with metadata indicating such would be great and a lot easier than manually doing that shit in scrivener

@@ -20,7 +20,7 @@ const path_1 = __importDefault(require("path"));
 const fs_readdir_recursive_1 = __importDefault(require("fs-readdir-recursive"));
 exports.default = (bookConfig) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const manPath = path_1.default.join('', bookConfig.manuscript);
+        const manPath = path_1.default.join("", bookConfig.manuscript);
         /*
         1. Read directory recursively
         2. Create an array to store items
@@ -32,22 +32,22 @@ exports.default = (bookConfig) => __awaiter(void 0, void 0, void 0, function* ()
         */
         const rawContents = (0, fs_readdir_recursive_1.default)(manPath);
         const chapterArray = [];
-        const directoryList = rawContents.map(item => item.replace('manuscript\\', ''));
-        directoryList.forEach(item => {
-            item.split('\\')
-                .map(segment => {
-                const splits = segment.split('~ ');
-                return splits.length > 1 ?
-                    splits.filter((_, i) => i > 0).join()
-                    :
-                        splits.toString();
+        const directoryList = rawContents.map((item) => item.replace("manuscript\\", ""));
+        directoryList.forEach((item) => {
+            item
+                .split("\\")
+                .map((segment) => {
+                const splits = segment.split("~ ");
+                return splits.length > 1
+                    ? splits.filter((_, i) => i > 0).join()
+                    : splits.toString();
             })
-                .forEach(segment => {
-                !chapterArray.some(chapter => chapter.title === segment) &&
+                .forEach((segment) => {
+                !chapterArray.some((chapter) => chapter.title === segment) &&
                     chapterArray.push({
-                        title: segment.replace('.md', ''),
+                        title: segment.replace(".md", ""),
                         path: item,
-                        isSection: !segment.includes('.md')
+                        isSection: !segment.includes(".md"),
                     });
             });
         });
@@ -55,14 +55,14 @@ exports.default = (bookConfig) => __awaiter(void 0, void 0, void 0, function* ()
         exportBasedOnFormat(bookConfig, convertedChapters);
     }
     catch (err) {
-        console.log('Failed to generate ebook.', err);
+        console.log("Failed to generate ebook.", err);
     }
 });
 const markdownToHtml = (chapterArray) => __awaiter(void 0, void 0, void 0, function* () {
     const converter = new showdown_1.default.Converter();
     // We need to recursively list all folders within manuscript and create chapters for them.
     return Promise.all(chapterArray.map((chapter) => __awaiter(void 0, void 0, void 0, function* () {
-        const convertedChapter = Object.assign(Object.assign({}, chapter), { content: '' });
+        const convertedChapter = Object.assign(Object.assign({}, chapter), { content: "" });
         if (chapter.isSection) {
             return convertedChapter;
         }

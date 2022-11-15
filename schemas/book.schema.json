@@ -25,9 +25,9 @@
       "description": "The title of the book.",
       "type": "string"
     },
-    "authors": {
+    "author": {
       "description": "The author of the book.",
-      "type": "array",
+      "type": ["array", "string"],
       "items": {
         "type":"string"
       }

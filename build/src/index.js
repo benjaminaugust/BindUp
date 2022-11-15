@@ -13,6 +13,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+exports.generateBook = void 0;
 const commander_1 = require("commander");
 const exportBook_1 = __importDefault(require("./utils/export/exportBook"));
 const initSchema_1 = require("./utils/schema/initSchema");
@@ -27,12 +28,13 @@ const generateBook = (configPath) => __awaiter(void 0, void 0, void 0, function*
     const bookConfig = JSON.parse(rawConfigString);
     const ajv = (0, initSchema_1.initSchemas)();
     if (!(0, validateBookConfig_1.validateBookConfig)(ajv, bookConfig)) {
-        return console.error(chalk_1.default.yellowBright(`\nFailed to render "${(bookConfig === null || bookConfig === void 0 ? void 0 : bookConfig.title) || 'book'}"\n`));
+        return console.error(chalk_1.default.yellowBright(`\nFailed to render "${(bookConfig === null || bookConfig === void 0 ? void 0 : bookConfig.title) || "book"}"\n`));
     }
     yield (0, exportBook_1.default)(bookConfig);
 });
+exports.generateBook = generateBook;
 commander_1.program
-    .command('render <book-config>')
-    .description('Render your book into an epub file')
+    .command("render <book-config>")
+    .description("Render your book into an epub file")
     .action(generateBook);
 commander_1.program.parse();

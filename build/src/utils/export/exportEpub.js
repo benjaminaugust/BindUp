@@ -18,14 +18,11 @@ exports.default = (bookConfig, convertedContent) => __awaiter(void 0, void 0, vo
     // const chapterArray = [];
     // if (!convertedContent?.chapters)
     //   throw new Error("No chapters found when converting to Epub!")
-    // // We need to check for sections. If they exist, insert them into the array 
+    // // We need to check for sections. If they exist, insert them into the array
     // console.log(bookConfig.bookTitle)
     try {
         const content = yield (0, epub_gen_memory_1.default)(Object.assign({}, bookConfig), convertedContent);
-        promises_1.default.writeFile(`${bookConfig.title
-            .replace(' ', '-')
-            .replace(':', '')
-            .replace(',', '')}`, content);
+        promises_1.default.writeFile(`${bookConfig.title.replace(" ", "-").replace(":", "").replace(",", "")}`, content);
         console.log("Ebook Generated Successfully!");
     }
     catch (err) {

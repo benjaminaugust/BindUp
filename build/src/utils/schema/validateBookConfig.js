@@ -6,13 +6,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateBookConfig = void 0;
 const chalk_1 = __importDefault(require("chalk"));
 const validateBookConfig = (ajv, bookConfig) => {
-    const validate = ajv.getSchema('book');
+    const validate = ajv.getSchema("book");
     if (!validate) {
         console.log("Validate broke");
         return false;
     }
     if (validate(bookConfig)) {
-        console.log('Success validating');
+        console.log("Success validating");
         return true;
     }
     if (validate.errors) {
@@ -20,8 +20,8 @@ const validateBookConfig = (ajv, bookConfig) => {
         let x = 0;
         for (const err of validate.errors) {
             if (err.instancePath)
-                console.error(chalk_1.default.red.bold('\nAt ' + err.instancePath));
-            console.error(chalk_1.default.red.bold('\nBook config error: ' + err.message));
+                console.error(chalk_1.default.red.bold("\nAt " + err.instancePath));
+            console.error(chalk_1.default.red.bold("\nBook config error: " + err.message));
         }
     }
     return false;
