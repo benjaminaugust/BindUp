@@ -4,6 +4,9 @@
 
 A CLI for rendering markdown directories into epub files. This readme will be fleshed out further in time.
 
+Read the full docs at 
+- https://benjaminaugust.github.io/BindUp/
+
 ## Configure your book
 
 To properly configure your book for Bindup:
@@ -51,7 +54,7 @@ Example `book-config.json`:
 }
 ```
 
-Check the spec in `config-spec.md` for a full list of valid properties.
+[Check the spec for a full list of valid properties](https://benjaminaugust.github.io/BindUp/book).
 
 Required properties:
 

@@ -8,36 +8,36 @@ A global book configuration object.
 
 | Abstract            | Extensible | Status         | Identifiable | Custom Properties | Additional Properties | Access Restrictions | Defined In                                                         |
 | :------------------ | :--------- | :------------- | :----------- | :---------------- | :-------------------- | :------------------ | :----------------------------------------------------------------- |
-| Can be instantiated | No         | Unknown status | No           | Forbidden         | Allowed               | none                | [book.schema.json](../out/book.schema.json "open original schema") |
+| Can be instantiated | No         | Unknown status | No           | Forbidden         | Allowed               | none                | [book.schema.json](https://github.com/benjaminaugust/BindUp/tree/main/out "open original schema") |
 
 ## Book Type
 
-`object` ([Book](book.md))
+`object` ([Book](book))
 
 # Book Properties
 
 | Property                                        | Type      | Required | Nullable       | Defined by                                                                                |
 | :---------------------------------------------- | :-------- | :------- | :------------- | :---------------------------------------------------------------------------------------- |
-| [manuscript](#manuscript)                       | `string`  | Required | cannot be null | [Book](book-properties-manuscript.md "book#/properties/manuscript")                       |
-| [formats](#formats)                             | `array`   | Required | cannot be null | [Book](book-properties-formats.md "book#/properties/formats")                             |
-| [title](#title)                                 | `string`  | Required | cannot be null | [Book](book-properties-title.md "book#/properties/title")                                 |
-| [author](#author)                               | Multiple  | Required | cannot be null | [Book](book-properties-author.md "book#/properties/author")                               |
-| [description](#description)                     | `string`  | Optional | cannot be null | [Book](book-properties-description.md "book#/properties/description")                     |
-| [publisher](#publisher)                         | `string`  | Optional | cannot be null | [Book](book-properties-publisher.md "book#/properties/publisher")                         |
-| [coverPath](#coverpath)                         | `string`  | Optional | cannot be null | [Book](book-properties-coverpath.md "book#/properties/coverPath")                         |
-| [tocInTOC](#tocintoc)                           | `boolean` | Optional | cannot be null | [Book](book-properties-tocintoc.md "book#/properties/tocInTOC")                           |
-| [numberChaptersInTOC](#numberchaptersintoc)     | `boolean` | Optional | cannot be null | [Book](book-properties-numberchaptersintoc.md "book#/properties/numberChaptersInTOC")     |
-| [prependChapterTitles](#prependchaptertitles)   | `boolean` | Optional | cannot be null | [Book](book-properties-prependchaptertitles.md "book#/properties/prependChapterTitles")   |
-| [date](#date)                                   | `string`  | Optional | cannot be null | [Book](book-properties-date.md "book#/properties/date")                                   |
-| [lang](#lang)                                   | `string`  | Optional | cannot be null | [Book](book-properties-lang.md "book#/properties/lang")                                   |
-| [css](#css)                                     | `string`  | Optional | cannot be null | [Book](book-properties-css.md "book#/properties/css")                                     |
-| [fonts](#fonts)                                 | `array`   | Optional | cannot be null | [Book](book-properties-fonts.md "book#/properties/fonts")                                 |
-| [epubVersion](#epubversion)                     | `number`  | Optional | cannot be null | [Book](book-properties-epubversion.md "book#/properties/epubVersion")                     |
-| [fetchTimeout](#fetchtimeout)                   | `number`  | Optional | cannot be null | [Book](book-properties-fetchtimeout.md "book#/properties/fetchTimeout")                   |
-| [retryTimes](#retrytimes)                       | `number`  | Optional | cannot be null | [Book](book-properties-retrytimes.md "book#/properties/retryTimes")                       |
-| [batchSize](#batchsize)                         | `number`  | Optional | cannot be null | [Book](book-properties-batchsize.md "book#/properties/batchSize")                         |
-| [ignoreFailedDownloads](#ignorefaileddownloads) | `boolean` | Optional | cannot be null | [Book](book-properties-ignorefaileddownloads.md "book#/properties/ignoreFailedDownloads") |
-| [verbose](#verbose)                             | `boolean` | Optional | cannot be null | [Book](book-properties-verbose.md "book#/properties/verbose")                             |
+| [manuscript](#manuscript)                       | `string`  | Required | cannot be null | [Book](book-properties-manuscript "book#/properties/manuscript")                       |
+| [formats](#formats)                             | `array`   | Required | cannot be null | [Book](book-properties-formats "book#/properties/formats")                             |
+| [title](#title)                                 | `string`  | Required | cannot be null | [Book](book-properties-title "book#/properties/title")                                 |
+| [author](#author)                               | Multiple  | Required | cannot be null | [Book](book-properties-author "book#/properties/author")                               |
+| [description](#description)                     | `string`  | Optional | cannot be null | [Book](book-properties-description "book#/properties/description")                     |
+| [publisher](#publisher)                         | `string`  | Optional | cannot be null | [Book](book-properties-publisher "book#/properties/publisher")                         |
+| [coverPath](#coverpath)                         | `string`  | Optional | cannot be null | [Book](book-properties-coverpath "book#/properties/coverPath")                         |
+| [tocInTOC](#tocintoc)                           | `boolean` | Optional | cannot be null | [Book](book-properties-tocintoc "book#/properties/tocInTOC")                           |
+| [numberChaptersInTOC](#numberchaptersintoc)     | `boolean` | Optional | cannot be null | [Book](book-properties-numberchaptersintoc "book#/properties/numberChaptersInTOC")     |
+| [prependChapterTitles](#prependchaptertitles)   | `boolean` | Optional | cannot be null | [Book](book-properties-prependchaptertitles "book#/properties/prependChapterTitles")   |
+| [date](#date)                                   | `string`  | Optional | cannot be null | [Book](book-properties-date "book#/properties/date")                                   |
+| [lang](#lang)                                   | `string`  | Optional | cannot be null | [Book](book-properties-lang "book#/properties/lang")                                   |
+| [css](#css)                                     | `string`  | Optional | cannot be null | [Book](book-properties-css "book#/properties/css")                                     |
+| [fonts](#fonts)                                 | `array`   | Optional | cannot be null | [Book](book-properties-fonts "book#/properties/fonts")                                 |
+| [epubVersion](#epubversion)                     | `number`  | Optional | cannot be null | [Book](book-properties-epubversion "book#/properties/epubVersion")                     |
+| [fetchTimeout](#fetchtimeout)                   | `number`  | Optional | cannot be null | [Book](book-properties-fetchtimeout "book#/properties/fetchTimeout")                   |
+| [retryTimes](#retrytimes)                       | `number`  | Optional | cannot be null | [Book](book-properties-retrytimes "book#/properties/retryTimes")                       |
+| [batchSize](#batchsize)                         | `number`  | Optional | cannot be null | [Book](book-properties-batchsize "book#/properties/batchSize")                         |
+| [ignoreFailedDownloads](#ignorefaileddownloads) | `boolean` | Optional | cannot be null | [Book](book-properties-ignorefaileddownloads "book#/properties/ignoreFailedDownloads") |
+| [verbose](#verbose)                             | `boolean` | Optional | cannot be null | [Book](book-properties-verbose "book#/properties/verbose")                             |
 
 ## manuscript
 
@@ -51,7 +51,7 @@ The relative path to the manuscript folder.
 
 *   cannot be null
 
-*   defined in: [Book](book-properties-manuscript.md "book#/properties/manuscript")
+*   defined in: [Book](book-properties-manuscript "book#/properties/manuscript")
 
 ### manuscript Type
 
@@ -69,7 +69,7 @@ An array of formats you want to print your book in (epub only as of now).
 
 *   cannot be null
 
-*   defined in: [Book](book-properties-formats.md "book#/properties/formats")
+*   defined in: [Book](book-properties-formats "book#/properties/formats")
 
 ### formats Type
 
@@ -87,7 +87,7 @@ The title of the book.
 
 *   cannot be null
 
-*   defined in: [Book](book-properties-title.md "book#/properties/title")
+*   defined in: [Book](book-properties-title "book#/properties/title")
 
 ### title Type
 
@@ -105,7 +105,7 @@ The author of the book.
 
 *   cannot be null
 
-*   defined in: [Book](book-properties-author.md "book#/properties/author")
+*   defined in: [Book](book-properties-author "book#/properties/author")
 
 ### author Type
 
@@ -123,7 +123,7 @@ The description of the book.
 
 *   cannot be null
 
-*   defined in: [Book](book-properties-description.md "book#/properties/description")
+*   defined in: [Book](book-properties-description "book#/properties/description")
 
 ### description Type
 
@@ -141,7 +141,7 @@ The publisher of the book.
 
 *   cannot be null
 
-*   defined in: [Book](book-properties-publisher.md "book#/properties/publisher")
+*   defined in: [Book](book-properties-publisher "book#/properties/publisher")
 
 ### publisher Type
 
@@ -159,7 +159,7 @@ The path to the book cover (jpg, png).
 
 *   cannot be null
 
-*   defined in: [Book](book-properties-coverpath.md "book#/properties/coverPath")
+*   defined in: [Book](book-properties-coverpath "book#/properties/coverPath")
 
 ### coverPath Type
 
@@ -177,7 +177,7 @@ The path to the book cover (jpg, png).
 
 *   cannot be null
 
-*   defined in: [Book](book-properties-tocintoc.md "book#/properties/tocInTOC")
+*   defined in: [Book](book-properties-tocintoc "book#/properties/tocInTOC")
 
 ### tocInTOC Type
 
@@ -195,7 +195,7 @@ The path to the book cover (jpg, png).
 
 *   cannot be null
 
-*   defined in: [Book](book-properties-numberchaptersintoc.md "book#/properties/numberChaptersInTOC")
+*   defined in: [Book](book-properties-numberchaptersintoc "book#/properties/numberChaptersInTOC")
 
 ### numberChaptersInTOC Type
 
@@ -213,7 +213,7 @@ The path to the book cover (jpg, png).
 
 *   cannot be null
 
-*   defined in: [Book](book-properties-prependchaptertitles.md "book#/properties/prependChapterTitles")
+*   defined in: [Book](book-properties-prependchaptertitles "book#/properties/prependChapterTitles")
 
 ### prependChapterTitles Type
 
@@ -231,7 +231,7 @@ The path to the book cover (jpg, png).
 
 *   cannot be null
 
-*   defined in: [Book](book-properties-date.md "book#/properties/date")
+*   defined in: [Book](book-properties-date "book#/properties/date")
 
 ### date Type
 
@@ -249,7 +249,7 @@ The path to the book cover (jpg, png).
 
 *   cannot be null
 
-*   defined in: [Book](book-properties-lang.md "book#/properties/lang")
+*   defined in: [Book](book-properties-lang "book#/properties/lang")
 
 ### lang Type
 
@@ -267,7 +267,7 @@ A CSS string that overrides default styles.
 
 *   cannot be null
 
-*   defined in: [Book](book-properties-css.md "book#/properties/css")
+*   defined in: [Book](book-properties-css "book#/properties/css")
 
 ### css Type
 
@@ -281,15 +281,15 @@ Array of fonts to include.
 
 *   is optional
 
-*   Type: `object[]` ([Details](book-properties-fonts-items.md))
+*   Type: `object[]` ([Details](book-properties-fonts-items))
 
 *   cannot be null
 
-*   defined in: [Book](book-properties-fonts.md "book#/properties/fonts")
+*   defined in: [Book](book-properties-fonts "book#/properties/fonts")
 
 ### fonts Type
 
-`object[]` ([Details](book-properties-fonts-items.md))
+`object[]` ([Details](book-properties-fonts-items))
 
 ## epubVersion
 
@@ -303,7 +303,7 @@ Array of fonts to include.
 
 *   cannot be null
 
-*   defined in: [Book](book-properties-epubversion.md "book#/properties/epubVersion")
+*   defined in: [Book](book-properties-epubversion "book#/properties/epubVersion")
 
 ### epubVersion Type
 
@@ -321,7 +321,7 @@ Array of fonts to include.
 
 *   cannot be null
 
-*   defined in: [Book](book-properties-fetchtimeout.md "book#/properties/fetchTimeout")
+*   defined in: [Book](book-properties-fetchtimeout "book#/properties/fetchTimeout")
 
 ### fetchTimeout Type
 
@@ -339,7 +339,7 @@ Array of fonts to include.
 
 *   cannot be null
 
-*   defined in: [Book](book-properties-retrytimes.md "book#/properties/retryTimes")
+*   defined in: [Book](book-properties-retrytimes "book#/properties/retryTimes")
 
 ### retryTimes Type
 
@@ -357,7 +357,7 @@ Array of fonts to include.
 
 *   cannot be null
 
-*   defined in: [Book](book-properties-batchsize.md "book#/properties/batchSize")
+*   defined in: [Book](book-properties-batchsize "book#/properties/batchSize")
 
 ### batchSize Type
 
@@ -375,7 +375,7 @@ Array of fonts to include.
 
 *   cannot be null
 
-*   defined in: [Book](book-properties-ignorefaileddownloads.md "book#/properties/ignoreFailedDownloads")
+*   defined in: [Book](book-properties-ignorefaileddownloads "book#/properties/ignoreFailedDownloads")
 
 ### ignoreFailedDownloads Type
 
@@ -393,7 +393,7 @@ Array of fonts to include.
 
 *   cannot be null
 
-*   defined in: [Book](book-properties-verbose.md "book#/properties/verbose")
+*   defined in: [Book](book-properties-verbose "book#/properties/verbose")
 
 ### verbose Type
 
