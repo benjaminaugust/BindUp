@@ -1,6 +1,6 @@
 {
-  "name": "writedown",
-  "version": "1.0.0",
+  "name": "bindup",
+  "version": "0.5.2",
   "description": "static ebook generator",
   "main": "src/index.ts",
   "type": "commonjs",
@@ -31,7 +31,7 @@
     "uuid": "^9.0.0"
   },
   "bin": {
-    "writedown": "build/src/index.js"
+    "bindup": "build/src/index.js"
   },
   "devDependencies": {
     "@types/fs-readdir-recursive": "^1.1.0",

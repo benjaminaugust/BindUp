@@ -1,10 +1,12 @@
-# Writedown
+# Bindup
+
+`npm i -g bindup`
 
 A CLI for rendering markdown directories into epub files. This readme will be fleshed out further in time.
 
 ## Configure your book
 
-To properly configure your book for writedown:
+To properly configure your book for Bindup:
 
 - Keep your book in a `manuscript` folder
 - Order your folders and files by prepending a number, then the `~` symbol to the front of their titles.
@@ -46,10 +48,10 @@ Examples of optional properties include:
 
 ## Render epubs
 
-Use `writedown book_config_path_here`
+Use `bindup render book_config_path_here`
 
 That will render an epub to the directory the command is being run from.
 
 For example:
 
-`writedown my-book-config.json`
+`bindup render my-book-config.json`
