@@ -1,8 +1,0 @@
-{
-    "formats": [
-        "epub"
-    ],
-    "manuscript": "./testbook",
-    "title": "Go Book 1: Descendants of the Darkness",
-    "author": "Benjamin August"
-}

@@ -9,7 +9,10 @@ A CLI for rendering markdown directories into epub files. This readme will be fl
 To properly configure your book for Bindup:
 
 - Keep your book in a `manuscript` folder
-- Order your folders and files by prepending a number, then the `~` symbol to the front of their titles.
+- Order your folders and files by prepending a number, then the `~` symbol to the front of their titles
+- Create a json configuration file
+
+### Organize your book in a manuscript folder
 
 An example of how your manuscript directory might look is:
 
@@ -24,14 +27,31 @@ It works the same for nested folders:
 
 - `manuscript`
   - `1~ Dedication.md`
-  - `2~ Chapter 1`
+  - `2~ Chapter 1` (Folder)
     - `1~ Section A.md`
     - `2~ Section B.md`
-  - `3~ Chapter 2`
+  - `3~ Chapter 2` (Folder)
     - `1~ Part 1.md`
     - `2~ Part 2.md`
 
-You must customize settings for your book by creating a JSON file with valid properties. Check the `book.schema.json` file in the `schemas` directory of the repo to learn which properties are valid.
+### Create a json config file
+
+You must customize settings for your book by creating a JSON file with valid properties. 
+
+Example `book-config.json`:
+
+```json
+{
+  "author": "Benjamin August",
+      "title": "Book 1: Welcome to the Multiverse",
+      "manuscript": "./myBookDirectory",
+    "formats": [
+        "epub"
+    ]
+}
+```
+
+Check the `book.schema.json` file in the `schemas` directory of this project's repo to learn which properties are valid.
 
 Required properties:
 
