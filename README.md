@@ -51,7 +51,7 @@ Example `book-config.json`:
 }
 ```
 
-Check the `book.schema.json` file in the `schemas` directory of this project's repo to learn which properties are valid.
+Check the spec in `config-spec.md` for a full list of valid properties.
 
 Required properties:
 
