@@ -52,7 +52,7 @@ exports.default = (bookConfig) => __awaiter(void 0, void 0, void 0, function* ()
             });
         });
         const convertedChapters = yield markdownToHtml(chapterArray);
-        exportBasedOnFormat(bookConfig, convertedChapters);
+        return exportBasedOnFormat(bookConfig, convertedChapters);
     }
     catch (err) {
         console.log("Failed to generate ebook.", err);
@@ -78,8 +78,7 @@ const exportBasedOnFormat = (bookConfig, convertedContent) => __awaiter(void 0, 
     formats.forEach((thisFormat) => __awaiter(void 0, void 0, void 0, function* () {
         switch (thisFormat) {
             case BookTypes_1.Format.epub:
-                yield (0, exportEpub_1.default)(bookConfig, convertedContent);
-                break;
+                return yield (0, exportEpub_1.default)(bookConfig, convertedContent);
         }
     }));
 });

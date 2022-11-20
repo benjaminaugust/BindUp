@@ -24,6 +24,7 @@ exports.default = (bookConfig, convertedContent) => __awaiter(void 0, void 0, vo
         const content = yield (0, epub_gen_memory_1.default)(Object.assign({}, bookConfig), convertedContent);
         promises_1.default.writeFile(`${bookConfig.title.replace(" ", "-").replace(":", "").replace(",", "")}`, content);
         console.log("Ebook Generated Successfully!");
+        return content;
     }
     catch (err) {
         console.error("Failed to generate Ebook because of ", err);

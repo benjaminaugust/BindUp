@@ -30,11 +30,15 @@ const generateBook = (configPath) => __awaiter(void 0, void 0, void 0, function*
     if (!(0, validateBookConfig_1.validateBookConfig)(ajv, bookConfig)) {
         return console.error(chalk_1.default.yellowBright(`\nFailed to render "${(bookConfig === null || bookConfig === void 0 ? void 0 : bookConfig.title) || "book"}"\n`));
     }
-    yield (0, exportBook_1.default)(bookConfig);
+    const epub = yield (0, exportBook_1.default)(bookConfig);
+    if (epub === null) {
+        return console.error(chalk_1.default.redBright(`\nFailed to render "${(bookConfig === null || bookConfig === void 0 ? void 0 : bookConfig.title) || "book"}"\n`));
+    }
 });
 exports.generateBook = generateBook;
+const cliMethod = generateBook;
 commander_1.program
     .command("render <book-config>")
     .description("Render your book into an epub file")
-    .action(generateBook);
+    .action(cliMethod);
 commander_1.program.parse();

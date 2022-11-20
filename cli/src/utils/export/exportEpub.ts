@@ -3,7 +3,10 @@ import epub from "epub-gen-memory";
 import { BookConfig } from "../../types/BookTypes";
 import fs from "fs/promises";
 
-export default async (bookConfig: BookConfig, convertedContent: any) => {
+export default async (
+  bookConfig: BookConfig,
+  convertedContent: any
+): Promise<Buffer | void> => {
   // const chapterArray = [];
 
   // if (!convertedContent?.chapters)
@@ -20,6 +23,7 @@ export default async (bookConfig: BookConfig, convertedContent: any) => {
       content
     );
     console.log("Ebook Generated Successfully!");
+    return content;
   } catch (err) {
     console.error("Failed to generate Ebook because of ", err);
   }

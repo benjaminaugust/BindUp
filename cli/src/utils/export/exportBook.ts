@@ -6,7 +6,7 @@ import exportEpub from "./exportEpub";
 import path from "path";
 import readdirRecursive from "fs-readdir-recursive";
 
-export default async (bookConfig: BookConfig): Promise<void> => {
+export default async (bookConfig: BookConfig): Promise<Buffer | void> => {
   try {
     const manPath = path.join("", bookConfig.manuscript);
 
@@ -48,7 +48,7 @@ export default async (bookConfig: BookConfig): Promise<void> => {
     });
 
     const convertedChapters = await markdownToHtml(chapterArray);
-    exportBasedOnFormat(bookConfig, convertedChapters);
+    return exportBasedOnFormat(bookConfig, convertedChapters);
   } catch (err) {
     console.log("Failed to generate ebook.", err);
   }
@@ -80,7 +80,7 @@ const markdownToHtml = async (chapterArray: any[]): Promise<any> => {
 const exportBasedOnFormat = async (
   bookConfig: BookConfig,
   convertedContent: any
-) => {
+): Promise<Buffer | void> => {
   const { formats } = bookConfig;
 
   if (!formats) throw new Error("No valid format specified!");
@@ -88,8 +88,7 @@ const exportBasedOnFormat = async (
   formats.forEach(async (thisFormat) => {
     switch (thisFormat) {
       case Format.epub:
-        await exportEpub(bookConfig, convertedContent);
-        break;
+        return await exportEpub(bookConfig, convertedContent);
     }
   });
 };

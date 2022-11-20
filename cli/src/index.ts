@@ -9,7 +9,7 @@ import path from "path";
 import process from "process";
 import chalk from "chalk";
 
-const generateBook = async (configPath: string) => {
+const generateBook = async (configPath: string): Promise<Buffer | void> => {
   const rawConfigFile = await fs.readFile(path.join(process.cwd(), configPath));
   const rawConfigString = rawConfigFile.toString();
   const bookConfig: BookConfig = JSON.parse(rawConfigString);
@@ -22,13 +22,20 @@ const generateBook = async (configPath: string) => {
     );
   }
 
-  await exportBook(bookConfig);
+  const epub = await exportBook(bookConfig);
+  if (epub === null) {
+    return console.error(
+      chalk.redBright(`\nFailed to render "${bookConfig?.title || "book"}"\n`)
+    );
+  }
 };
+
+const cliMethod = generateBook as (configPath: string) => Promise<void>;
 
 program
   .command("render <book-config>")
   .description("Render your book into an epub file")
-  .action(generateBook);
+  .action(cliMethod);
 
 program.parse();
 
