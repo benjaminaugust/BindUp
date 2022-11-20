@@ -117,6 +117,13 @@ const styleBook = (bookConfig: BookConfig): string => {
     configCSS += ` li > a {font-family: ${bookConfig.tocFontFamily};}`;
   }
 
+  const { headingFontFamilies } = bookConfig;
+  if (headingFontFamilies) {
+    headingFontFamilies.forEach(({ headingLevel, fontFamily }) => {
+      configCSS += ` ${headingLevel}{font-family: ${fontFamily};}`;
+    });
+  }
+
   if (bookConfig.fontClasses) {
     bookConfig.fontClasses.forEach(({ fontFamily, className }) => {
       if (!className || !fontFamily) return;

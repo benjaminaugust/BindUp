@@ -84,29 +84,20 @@
             "type": "string",
             "description": "The default font family of the table of contents. Ex: Georgia, serif"
         },
-        "h1FontFamily": {
-            "type": "string",
-            "description": "The default font family of every Heading 1 in the book. Ex: Georgia, serif"
-        },
-        "h2FontFamily": {
-            "type": "string",
-            "description": "The default font family of every Heading 2 in the book. Ex: Georgia, serif"
-        },
-        "h3FontFamily": {
-            "type": "string",
-            "description": "The default font family of every Heading 3 in the book. Ex: Georgia, serif"
-        },
-        "h4FontFamily": {
-            "type": "string",
-            "description": "The default font family of every Heading 4 in the book. Ex: Georgia, serif"
-        },
-        "h5FontFamily": {
-            "type": "string",
-            "description": "The default font family of every Heading 5 in the book. Ex: Georgia, serif"
-        },
-        "h6FontFamily": {
-            "type": "string",
-            "description": "The default font family of every Heading 6 in the book. Ex: Georgia, serif"
+        "headingFontFamilies": {
+            "type": "array",
+            "description": "An array of font family objects that style headings.",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "headingLevel": { "type": "string" },
+                    "fontFamily": { "type": "string" }
+                },
+                "required": [
+                    "headingLevel",
+                    "fontFamily"
+                ]
+            }
         },
         "fontClasses": {
             "description": "An array of objects describing classes you want to wrap text in. Use `<span class='className'>text</span>` to change the font of any text to whatever font you've associated with that class.",
