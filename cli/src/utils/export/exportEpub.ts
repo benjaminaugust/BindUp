@@ -1,6 +1,7 @@
 import epub from "epub-gen-memory";
 import { BookConfig } from "../../types/BookTypes";
 import fs from "fs/promises";
+import chalk from "chalk";
 import path from "path";
 
 export default async (
@@ -8,7 +9,7 @@ export default async (
   convertedContent: any
 ): Promise<Buffer | void> => {
   // const chapterArray = [];
-
+  console.log(chalk.blueBright(`Exporting epub...`));
   // if (!convertedContent?.chapters)
   //   throw new Error("No chapters found when converting to Epub!")
 
@@ -37,7 +38,13 @@ const writeEpub = async (
       await fs.mkdir(bookConfig.outDir, { recursive: true });
 
     await fs.writeFile(outPath, content);
-    console.log("Ebook Generated Successfully!");
+    console.log(
+      chalk.whiteBright(
+        `Successfully generated ${bookConfig.title} in ${
+          bookConfig.outDir || "the current directory"
+        }!`
+      )
+    );
   } catch (err: any) {
     if (err.code === "ENOENT") {
       console.error(`Failed to write Ebook file to ${outPath}`);

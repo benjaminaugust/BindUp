@@ -14,7 +14,6 @@ export const validateBookConfig = (
   }
 
   if (validate(bookConfig)) {
-    console.log("Success validating");
     return true;
   }
 

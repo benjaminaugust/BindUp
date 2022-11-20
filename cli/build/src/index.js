@@ -30,7 +30,7 @@ const generateBook = (configPath) => __awaiter(void 0, void 0, void 0, function*
     const { outdir } = commander_1.program.opts();
     if (outdir)
         bookConfig.outDir = outdir;
-    console.log(commander_1.program.opts().outdir);
+    console.log(chalk_1.default.blueBright(`Validating ${configPath}`));
     const ajv = (0, initSchema_1.initSchemas)();
     if (!(0, validateBookConfig_1.validateBookConfig)(ajv, bookConfig)) {
         return console.error(chalk_1.default.yellowBright(`\nFailed to render "${(bookConfig === null || bookConfig === void 0 ? void 0 : bookConfig.title) || "book"}"\n`));
@@ -39,6 +39,7 @@ const generateBook = (configPath) => __awaiter(void 0, void 0, void 0, function*
     if (epub === null) {
         return console.error(chalk_1.default.redBright(`\nFailed to render "${(bookConfig === null || bookConfig === void 0 ? void 0 : bookConfig.title) || "book"}"\n`));
     }
+    return epub;
 });
 exports.generateBook = generateBook;
 const cliMethod = generateBook;

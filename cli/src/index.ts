@@ -18,7 +18,7 @@ const generateBook = async (configPath: string): Promise<Buffer | void> => {
   const { outdir } = program.opts();
   if (outdir) bookConfig.outDir = outdir;
 
-  console.log(program.opts().outdir);
+  console.log(chalk.blueBright(`Validating ${configPath}`));
   const ajv = initSchemas();
   if (!validateBookConfig(ajv, bookConfig)) {
     return console.error(
@@ -34,6 +34,8 @@ const generateBook = async (configPath: string): Promise<Buffer | void> => {
       chalk.redBright(`\nFailed to render "${bookConfig?.title || "book"}"\n`)
     );
   }
+
+  return epub;
 };
 
 const cliMethod = generateBook as (configPath: string) => Promise<void>;

@@ -1,4 +1,5 @@
 import { BookConfig, ConvertedContent } from "../../types/BookTypes";
+import chalk from "chalk";
 import showdown from "showdown";
 import fs from "fs/promises";
 import { Format } from "../../types/BookTypes";
@@ -20,6 +21,7 @@ export default async (bookConfig: BookConfig): Promise<Buffer | void> => {
     7. Repeat the process
     */
 
+    console.log(chalk.blueBright(`Converting files from "${manPath}"...`));
     const rawContents = readdirRecursive(manPath);
 
     const chapterArray: any[] = [];
@@ -50,7 +52,7 @@ export default async (bookConfig: BookConfig): Promise<Buffer | void> => {
     const convertedChapters = await markdownToHtml(chapterArray);
     return exportBasedOnFormat(bookConfig, convertedChapters);
   } catch (err) {
-    console.log("Failed to generate ebook.", err);
+    return console.log("Failed to generate ebook.", err);
   }
 };
 
@@ -81,6 +83,9 @@ const exportBasedOnFormat = async (
   bookConfig: BookConfig,
   convertedContent: any
 ): Promise<Buffer | void> => {
+  console.log(
+    chalk.blueBright(`Rendering to the following formats:`, bookConfig?.formats)
+  );
   const { formats } = bookConfig;
 
   if (!formats) throw new Error("No valid format specified!");

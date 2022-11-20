@@ -12,7 +12,6 @@ const validateBookConfig = (ajv, bookConfig) => {
         return false;
     }
     if (validate(bookConfig)) {
-        console.log("Success validating");
         return true;
     }
     if (validate.errors) {

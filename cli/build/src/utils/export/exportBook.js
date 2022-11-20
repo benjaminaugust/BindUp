@@ -12,6 +12,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const chalk_1 = __importDefault(require("chalk"));
 const showdown_1 = __importDefault(require("showdown"));
 const promises_1 = __importDefault(require("fs/promises"));
 const BookTypes_1 = require("../../types/BookTypes");
@@ -30,6 +31,7 @@ exports.default = (bookConfig) => __awaiter(void 0, void 0, void 0, function* ()
         6. Regardless, trim everything from `\\` and back to index position 0
         7. Repeat the process
         */
+        console.log(chalk_1.default.blueBright(`Converting files from "${manPath}"...`));
         const rawContents = (0, fs_readdir_recursive_1.default)(manPath);
         const chapterArray = [];
         const directoryList = rawContents.map((item) => item.replace("manuscript\\", ""));
@@ -55,7 +57,7 @@ exports.default = (bookConfig) => __awaiter(void 0, void 0, void 0, function* ()
         return exportBasedOnFormat(bookConfig, convertedChapters);
     }
     catch (err) {
-        console.log("Failed to generate ebook.", err);
+        return console.log("Failed to generate ebook.", err);
     }
 });
 const markdownToHtml = (chapterArray) => __awaiter(void 0, void 0, void 0, function* () {
@@ -72,6 +74,7 @@ const markdownToHtml = (chapterArray) => __awaiter(void 0, void 0, void 0, funct
     })));
 });
 const exportBasedOnFormat = (bookConfig, convertedContent) => __awaiter(void 0, void 0, void 0, function* () {
+    console.log(chalk_1.default.blueBright(`Rendering to the following formats:`, bookConfig === null || bookConfig === void 0 ? void 0 : bookConfig.formats));
     const { formats } = bookConfig;
     if (!formats)
         throw new Error("No valid format specified!");
