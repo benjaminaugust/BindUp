@@ -3,5 +3,5 @@
     "@cloudflare/doca": "^0.1.3",
     "jsonschema2mk": "^1.8.0"
   },
-  "version": "0.0.2"
+  "version": "0.0.3"
 }

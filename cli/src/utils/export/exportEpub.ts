@@ -2,6 +2,7 @@ import { ConvertedContent } from "./../../types/BookTypes";
 import epub from "epub-gen-memory";
 import { BookConfig } from "../../types/BookTypes";
 import fs from "fs/promises";
+import path from "path";
 
 export default async (
   bookConfig: BookConfig,
@@ -18,10 +19,12 @@ export default async (
   try {
     const content = await epub({ ...bookConfig }, convertedContent);
 
-    fs.writeFile(
-      `${bookConfig.title.replace(" ", "-").replace(":", "").replace(",", "")}`,
-      content
+    const outPath = path.join(
+      `${bookConfig.outDir ?? ""}`,
+      `${bookConfig.title.replace(" ", "-").replace(":", "").replace(",", "")}`
     );
+
+    fs.writeFile(outPath, content);
     console.log("Ebook Generated Successfully!");
     return content;
   } catch (err) {

@@ -10,6 +10,8 @@ export type BookConfig = {
   formats: string[];
   /**The relative path to the manuscript folder. */
   manuscript: string;
+  /**The relative path to output the book to. */
+  outDir: string;
   /**The title of the book. */
   title: string;
   /**The author(s) of the book. */

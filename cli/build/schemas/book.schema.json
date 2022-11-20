@@ -14,6 +14,10 @@
             "description": "The relative path to the manuscript folder.",
             "type": "string"
         },
+        "outDir": {
+            "description": "The relative path to export the book to.",
+            "type": "string"
+        },
         "formats": {
             "description": "An array of formats you want to print your book in (epub only as of now).",
             "type": "array",
