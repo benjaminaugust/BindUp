@@ -1,4 +1,3 @@
-import { ConvertedContent } from "./../../types/BookTypes";
 import epub from "epub-gen-memory";
 import { BookConfig } from "../../types/BookTypes";
 import fs from "fs/promises";
@@ -17,17 +16,32 @@ export default async (
   // console.log(bookConfig.bookTitle)
 
   try {
-    const content = await epub({ ...bookConfig }, convertedContent);
-
-    const outPath = path.join(
-      `${bookConfig.outDir ?? ""}`,
-      `${bookConfig.title.replace(" ", "-").replace(":", "").replace(",", "")}`
-    );
-
-    fs.writeFile(outPath, content);
-    console.log("Ebook Generated Successfully!");
+    let content = await epub({ ...bookConfig }, convertedContent);
+    await writeEpub(bookConfig, content);
     return content;
-  } catch (err) {
-    console.error("Failed to generate Ebook because of ", err);
+  } catch (err: any) {
+    return console.error(`Failed to render. ${bookConfig?.title}`, err);
+  }
+};
+
+const writeEpub = async (
+  bookConfig: BookConfig,
+  content: Buffer
+): Promise<void> => {
+  const outPath = path.join(
+    `${bookConfig.outDir ?? ""}`,
+    `${bookConfig.title.replace(" ", "-").replace(":", "").replace(",", "")}`
+  );
+  try {
+    if (bookConfig.outDir)
+      await fs.mkdir(bookConfig.outDir, { recursive: true });
+
+    await fs.writeFile(outPath, content);
+    console.log("Ebook Generated Successfully!");
+  } catch (err: any) {
+    if (err.code === "ENOENT") {
+      console.error(`Failed to write Ebook file to ${outPath}`);
+    }
+    throw err;
   }
 };

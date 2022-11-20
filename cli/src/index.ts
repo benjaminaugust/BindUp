@@ -8,6 +8,7 @@ import fs from "fs/promises";
 import path from "path";
 import process from "process";
 import chalk from "chalk";
+import { version } from "../package.json";
 
 const generateBook = async (configPath: string): Promise<Buffer | void> => {
   const rawConfigFile = await fs.readFile(path.join(process.cwd(), configPath));

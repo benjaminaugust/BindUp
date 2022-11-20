@@ -2,7 +2,11 @@ import AJV from "ajv";
 import bookSchema from "../../../schemas/book.schema.json";
 
 export const initSchemas = (): AJV => {
-  return addSchemas(new AJV());
+  return addSchemas(
+    new AJV({
+      allowUnionTypes: true,
+    })
+  );
 };
 
 const addSchemas = (ajv: AJV): AJV => {
