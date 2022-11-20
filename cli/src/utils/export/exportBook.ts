@@ -21,6 +21,11 @@ export default async (bookConfig: BookConfig): Promise<Buffer | void> => {
     7. Repeat the process
     */
 
+    if (bookConfig?.indentParagraphs) {
+      if (bookConfig?.css === undefined) bookConfig.css = "";
+      bookConfig.css += `p {text-indent: ${bookConfig.indentParagraphs}px}`;
+    }
+
     console.log(chalk.blueBright(`Converting files from "${manPath}"...`));
     const rawContents = readdirRecursive(manPath);
 

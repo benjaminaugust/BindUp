@@ -14,6 +14,10 @@
       "description": "The relative path to the manuscript folder.",
       "type":"string"
     },
+    "indentParagraphs": {
+      "description": "The amount, in pixels, to indent paragraphs. Do not use if you're adding your own styles with the css property.",
+      "type":"number"
+    },
     "outDir": {
       "description": "The relative path to export the book to.",
       "type":"string"

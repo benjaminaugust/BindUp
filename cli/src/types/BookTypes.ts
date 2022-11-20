@@ -10,6 +10,8 @@ export type BookConfig = {
   formats: string[];
   /**The relative path to the manuscript folder. */
   manuscript: string;
+  /**The amount, in pixels, to indent paragraphs. */
+  indentParagraphs?: number;
   /**The relative path to output the book to. */
   outDir: string;
   /**The title of the book. */

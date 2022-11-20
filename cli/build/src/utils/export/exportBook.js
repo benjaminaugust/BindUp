@@ -31,6 +31,11 @@ exports.default = (bookConfig) => __awaiter(void 0, void 0, void 0, function* ()
         6. Regardless, trim everything from `\\` and back to index position 0
         7. Repeat the process
         */
+        if (bookConfig === null || bookConfig === void 0 ? void 0 : bookConfig.indentParagraphs) {
+            if ((bookConfig === null || bookConfig === void 0 ? void 0 : bookConfig.css) === undefined)
+                bookConfig.css = "";
+            bookConfig.css += `p {text-indent: ${bookConfig.indentParagraphs}px}`;
+        }
         console.log(chalk_1.default.blueBright(`Converting files from "${manPath}"...`));
         const rawContents = (0, fs_readdir_recursive_1.default)(manPath);
         const chapterArray = [];
