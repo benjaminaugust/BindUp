@@ -9,6 +9,10 @@
             "pre-commit": "pretty-quick --staged"
         }
     },
+    "files": [
+        "/bin",
+        "/build"
+    ],
     "scripts": {
         "dev": "nodemon build/src/index.js",
         "test": "echo \"Error: no test specified\" && exit 1",
