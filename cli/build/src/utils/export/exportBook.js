@@ -31,11 +31,9 @@ exports.default = (bookConfig) => __awaiter(void 0, void 0, void 0, function* ()
         6. Regardless, trim everything from `\\` and back to index position 0
         7. Repeat the process
         */
-        if (bookConfig === null || bookConfig === void 0 ? void 0 : bookConfig.indentParagraphs) {
-            if ((bookConfig === null || bookConfig === void 0 ? void 0 : bookConfig.css) === undefined)
-                bookConfig.css = "";
-            bookConfig.css += `p {text-indent: ${bookConfig.indentParagraphs}px}`;
-        }
+        if ((bookConfig === null || bookConfig === void 0 ? void 0 : bookConfig.css) === undefined)
+            bookConfig.css = "";
+        bookConfig.css += styleBook(bookConfig);
         console.log(chalk_1.default.blueBright(`Converting files from "${manPath}"...`));
         const rawContents = (0, fs_readdir_recursive_1.default)(manPath);
         const chapterArray = [];
@@ -90,3 +88,23 @@ const exportBasedOnFormat = (bookConfig, convertedContent) => __awaiter(void 0, 
         }
     }));
 });
+const styleBook = (bookConfig) => {
+    let configCSS = "";
+    // Set default book-wide font
+    if (bookConfig.defaultFontFamily)
+        configCSS += ` p{ font-family: ${bookConfig.defaultFontFamily}; }`;
+    if (bookConfig === null || bookConfig === void 0 ? void 0 : bookConfig.indentParagraphs) {
+        configCSS += ` p {text-indent: ${bookConfig.indentParagraphs}px;}`;
+    }
+    if (bookConfig.tocFontFamily) {
+        configCSS += ` li > a {font-family: ${bookConfig.tocFontFamily};}`;
+    }
+    if (bookConfig.fontClasses) {
+        bookConfig.fontClasses.forEach(({ fontFamily, className }) => {
+            if (!className || !fontFamily)
+                return;
+            configCSS += ` .${className}{ font-family: ${fontFamily}; }`;
+        });
+    }
+    return configCSS;
+};

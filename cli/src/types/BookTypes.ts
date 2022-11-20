@@ -10,6 +10,27 @@ export type BookConfig = {
   formats: string[];
   /**The relative path to the manuscript folder. */
   manuscript: string;
+  /**The font family of the entire book. Ex: Georgia, serif*/
+  defaultFontFamily?: string;
+  /**The font family of the toc. Ex: Georgia, serif*/
+  tocFontFamily?: string;
+  /**The font family of every h1 in the entire book. Ex: Georgia, serif*/
+  h1FontFamily?: string;
+  /**The font family of every h2 in the entire book. Ex: Georgia, serif*/
+  h2FontFamily?: string;
+  /**The font family of every h3 in the entire book. Ex: Georgia, serif*/
+  h3FontFamily?: string;
+  /**The font family of every h4 in the entire book. Ex: Georgia, serif*/
+  h4FontFamily?: string;
+  /**The font family of every h5 in the entire book. Ex: Georgia, serif*/
+  h5FontFamily?: string;
+  /**The font family of every h6 in the entire book. Ex: Georgia, serif*/
+  h6FontFamily?: string;
+  /**An array of objects describing classes you want to wrap text in. Use `<span class='className'>text</span>` to change the font of any text to whatever font you've associated with that class.*/
+  fontClasses?: {
+    className: string;
+    fontFamily: string;
+  }[];
   /**The amount, in pixels, to indent paragraphs. */
   indentParagraphs?: number;
   /**The relative path to output the book to. */

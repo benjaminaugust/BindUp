@@ -21,10 +21,9 @@ export default async (bookConfig: BookConfig): Promise<Buffer | void> => {
     7. Repeat the process
     */
 
-    if (bookConfig?.indentParagraphs) {
-      if (bookConfig?.css === undefined) bookConfig.css = "";
-      bookConfig.css += `p {text-indent: ${bookConfig.indentParagraphs}px}`;
-    }
+    if (bookConfig?.css === undefined) bookConfig.css = "";
+
+    bookConfig.css += styleBook(bookConfig);
 
     console.log(chalk.blueBright(`Converting files from "${manPath}"...`));
     const rawContents = readdirRecursive(manPath);
@@ -101,4 +100,28 @@ const exportBasedOnFormat = async (
         return await exportEpub(bookConfig, convertedContent);
     }
   });
+};
+
+const styleBook = (bookConfig: BookConfig): string => {
+  let configCSS = "";
+
+  // Set default book-wide font
+  if (bookConfig.defaultFontFamily)
+    configCSS += ` p{ font-family: ${bookConfig.defaultFontFamily}; }`;
+
+  if (bookConfig?.indentParagraphs) {
+    configCSS += ` p {text-indent: ${bookConfig.indentParagraphs}px;}`;
+  }
+
+  if (bookConfig.tocFontFamily) {
+    configCSS += ` li > a {font-family: ${bookConfig.tocFontFamily};}`;
+  }
+
+  if (bookConfig.fontClasses) {
+    bookConfig.fontClasses.forEach(({ fontFamily, className }) => {
+      if (!className || !fontFamily) return;
+      configCSS += ` .${className}{ font-family: ${fontFamily}; }`;
+    });
+  }
+  return configCSS;
 };

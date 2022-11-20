@@ -76,8 +76,55 @@
             "description": "A CSS string that overrides default styles.",
             "type": "string"
         },
+        "defaultFontFamily": {
+            "type": "string",
+            "description": "The default font family of every paragraph in the book. Ex: Georgia, serif"
+        },
+        "tocFontFamily": {
+            "type": "string",
+            "description": "The default font family of the table of contents. Ex: Georgia, serif"
+        },
+        "h1FontFamily": {
+            "type": "string",
+            "description": "The default font family of every Heading 1 in the book. Ex: Georgia, serif"
+        },
+        "h2FontFamily": {
+            "type": "string",
+            "description": "The default font family of every Heading 2 in the book. Ex: Georgia, serif"
+        },
+        "h3FontFamily": {
+            "type": "string",
+            "description": "The default font family of every Heading 3 in the book. Ex: Georgia, serif"
+        },
+        "h4FontFamily": {
+            "type": "string",
+            "description": "The default font family of every Heading 4 in the book. Ex: Georgia, serif"
+        },
+        "h5FontFamily": {
+            "type": "string",
+            "description": "The default font family of every Heading 5 in the book. Ex: Georgia, serif"
+        },
+        "h6FontFamily": {
+            "type": "string",
+            "description": "The default font family of every Heading 6 in the book. Ex: Georgia, serif"
+        },
+        "fontClasses": {
+            "description": "An array of objects describing classes you want to wrap text in. Use `<span class='className'>text</span>` to change the font of any text to whatever font you've associated with that class.",
+            "type": "array",
+            "items": {
+                "type": "object",
+                "properties": {
+                    "className": { "type": "string" },
+                    "fontFamily": { "type": "string" }
+                },
+                "required": [
+                    "className",
+                    "fontFamily"
+                ]
+            }
+        },
         "fonts": {
-            "description": "Array of fonts to include.",
+            "description": "Array of fonts to include with the epub file. These fonts will be available to the epub. Useful if you want to use custom fonts",
             "type": "array",
             "items": {
                 "type": "object",
