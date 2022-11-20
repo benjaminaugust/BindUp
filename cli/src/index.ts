@@ -14,6 +14,11 @@ const generateBook = async (configPath: string): Promise<Buffer | void> => {
   const rawConfigFile = await fs.readFile(path.join(process.cwd(), configPath));
   const rawConfigString = rawConfigFile.toString();
   const bookConfig: BookConfig = JSON.parse(rawConfigString);
+
+  const { outdir } = program.opts();
+  if (outdir) bookConfig.outDir = outdir;
+
+  console.log(program.opts().outdir);
   const ajv = initSchemas();
   if (!validateBookConfig(ajv, bookConfig)) {
     return console.error(
@@ -37,6 +42,17 @@ program
   .command("render <book-config>")
   .description("Render your book into an epub file")
   .action(cliMethod);
+
+program.option(
+  "-o, --outdir <directory>",
+  "Set the directory the book will be rendered to"
+);
+
+program.version(
+  version,
+  "-v, --version",
+  "output the current version of bindup"
+);
 
 program.parse();
 
