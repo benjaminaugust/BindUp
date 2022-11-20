@@ -29,7 +29,7 @@ exports.default = (bookConfig, convertedContent) => __awaiter(void 0, void 0, vo
         return content;
     }
     catch (err) {
-        return console.error(`Failed to render. ${bookConfig === null || bookConfig === void 0 ? void 0 : bookConfig.title}`, err);
+        return console.error(chalk_1.default.redBright(`Failed to render. ${bookConfig === null || bookConfig === void 0 ? void 0 : bookConfig.title}`, err));
     }
 });
 const writeEpub = (bookConfig, content) => __awaiter(void 0, void 0, void 0, function* () {
@@ -43,7 +43,7 @@ const writeEpub = (bookConfig, content) => __awaiter(void 0, void 0, void 0, fun
     }
     catch (err) {
         if (err.code === "ENOENT") {
-            console.error(`Failed to write Ebook file to ${outPath}`);
+            console.error(chalk_1.default.redBright(`Failed to write Ebook file to ${outPath}`));
         }
         throw err;
     }

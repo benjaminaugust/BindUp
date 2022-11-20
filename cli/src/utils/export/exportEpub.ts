@@ -21,7 +21,9 @@ export default async (
     await writeEpub(bookConfig, content);
     return content;
   } catch (err: any) {
-    return console.error(`Failed to render. ${bookConfig?.title}`, err);
+    return console.error(
+      chalk.redBright(`Failed to render. ${bookConfig?.title}`, err)
+    );
   }
 };
 
@@ -47,7 +49,9 @@ const writeEpub = async (
     );
   } catch (err: any) {
     if (err.code === "ENOENT") {
-      console.error(`Failed to write Ebook file to ${outPath}`);
+      console.error(
+        chalk.redBright(`Failed to write Ebook file to ${outPath}`)
+      );
     }
     throw err;
   }
