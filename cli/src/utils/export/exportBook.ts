@@ -1,86 +1,26 @@
-import { BookConfig, ConvertedContent } from "../../types/BookTypes";
+import type { BookConfig } from "../../types/BookConfig";
 import chalk from "chalk";
-import showdown from "showdown";
-import fs from "fs/promises";
 import { Format } from "../../types/BookTypes";
 import exportEpub from "./exportEpub";
 import path from "path";
-import readdirRecursive from "fs-readdir-recursive";
+import getFonts from "../../book-styles/getFonts";
+import markdownToHtml from "../convert/markdownToHtml";
+import convertChapters from "../convert/convertChapters";
 
 export default async (bookConfig: BookConfig): Promise<Buffer | void> => {
   try {
-    const manPath = path.join("", bookConfig.manuscript);
-
-    /*
-    1. Read directory recursively
-    2. Create an array to store items
-    3. For each item, check what's next to every '\\'
-    4. If it's already in the items array, ignore it
-    5. If not, add it
-    6. Regardless, trim everything from `\\` and back to index position 0
-    7. Repeat the process
-    */
+    const manuscriptPath = path.join("", bookConfig.manuscript);
+    const chapterArray = convertChapters(manuscriptPath);
 
     if (bookConfig?.css === undefined) bookConfig.css = "";
 
-    bookConfig.css += styleBook(bookConfig);
-
-    console.log(chalk.blueBright(`Converting files from "${manPath}"...`));
-    const rawContents = readdirRecursive(manPath);
-
-    const chapterArray: any[] = [];
-
-    const directoryList = rawContents.map((item) =>
-      item.replace("manuscript\\", "")
-    );
-
-    directoryList.forEach((item) => {
-      item
-        .split("\\")
-        .map((segment) => {
-          const splits = segment.split("~ ");
-          return splits.length > 1
-            ? splits.filter((_, i) => i > 0).join()
-            : splits.toString();
-        })
-        .forEach((segment) => {
-          !chapterArray.some((chapter) => chapter.title === segment) &&
-            chapterArray.push({
-              title: segment.replace(".md", ""),
-              path: item,
-              isSection: !segment.includes(".md"),
-            });
-        });
-    });
+    bookConfig.css += getFonts(bookConfig);
 
     const convertedChapters = await markdownToHtml(chapterArray);
     return exportBasedOnFormat(bookConfig, convertedChapters);
   } catch (err) {
     return console.log("Failed to generate ebook.", err);
   }
-};
-
-const markdownToHtml = async (chapterArray: any[]): Promise<any> => {
-  const converter = new showdown.Converter();
-
-  // We need to recursively list all folders within manuscript and create chapters for them.
-
-  return Promise.all(
-    chapterArray.map(async (chapter) => {
-      const convertedChapter = {
-        ...chapter,
-        content: "",
-      };
-      if (chapter.isSection) {
-        return convertedChapter;
-      }
-      const content = await fs.readFile(
-        `testbook\\manuscript\\${chapter.path}`
-      );
-      convertedChapter.content = converter.makeHtml(content.toString());
-      return convertedChapter;
-    })
-  );
 };
 
 const exportBasedOnFormat = async (
@@ -100,35 +40,4 @@ const exportBasedOnFormat = async (
         return await exportEpub(bookConfig, convertedContent);
     }
   });
-};
-
-const styleBook = (bookConfig: BookConfig): string => {
-  let configCSS = "";
-
-  // Set default book-wide font
-  if (bookConfig.defaultFontFamily)
-    configCSS += ` p{ font-family: ${bookConfig.defaultFontFamily}; }`;
-
-  if (bookConfig?.indentParagraphs) {
-    configCSS += ` p {text-indent: ${bookConfig.indentParagraphs}px;}`;
-  }
-
-  if (bookConfig.tocFontFamily) {
-    configCSS += ` li > a {font-family: ${bookConfig.tocFontFamily};}`;
-  }
-
-  const { headingFontFamilies } = bookConfig;
-  if (headingFontFamilies) {
-    headingFontFamilies.forEach(({ headingLevel, fontFamily }) => {
-      configCSS += ` ${headingLevel}{font-family: ${fontFamily};}`;
-    });
-  }
-
-  if (bookConfig.fontClasses) {
-    bookConfig.fontClasses.forEach(({ fontFamily, className }) => {
-      if (!className || !fontFamily) return;
-      configCSS += ` .${className}{ font-family: ${fontFamily}; }`;
-    });
-  }
-  return configCSS;
 };

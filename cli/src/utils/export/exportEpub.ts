@@ -1,5 +1,5 @@
 import epub from "epub-gen-memory";
-import { BookConfig } from "../../types/BookTypes";
+import type { BookConfig } from "../../types/BookConfig";
 import fs from "fs/promises";
 import chalk from "chalk";
 import path from "path";

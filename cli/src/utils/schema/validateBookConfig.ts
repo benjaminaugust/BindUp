@@ -1,5 +1,5 @@
 import AJV from "ajv";
-import type { BookConfig } from "../../types/BookTypes";
+import type { BookConfig } from "../../types/BookConfig";
 import chalk from "chalk";
 
 export const validateBookConfig = (

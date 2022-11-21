@@ -76,6 +76,10 @@
       "description": "A CSS string that overrides default styles.",
       "type": "string"
     },
+    "cssPath": {
+      "description": "The path to a CSS file.",
+      "type": "string"
+    },
     "defaultFontFamily": {
       "type": "string",
       "description": "The default font family of every paragraph in the book. Ex: Georgia, serif"
