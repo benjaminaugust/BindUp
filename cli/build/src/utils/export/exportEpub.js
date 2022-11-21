@@ -17,12 +17,7 @@ const promises_1 = __importDefault(require("fs/promises"));
 const chalk_1 = __importDefault(require("chalk"));
 const path_1 = __importDefault(require("path"));
 exports.default = (bookConfig, convertedContent) => __awaiter(void 0, void 0, void 0, function* () {
-    // const chapterArray = [];
     console.log(chalk_1.default.blueBright(`Exporting epub...`));
-    // if (!convertedContent?.chapters)
-    //   throw new Error("No chapters found when converting to Epub!")
-    // // We need to check for sections. If they exist, insert them into the array
-    // console.log(bookConfig.bookTitle)
     try {
         let content = yield (0, epub_gen_memory_1.default)(Object.assign({}, bookConfig), convertedContent);
         yield writeEpub(bookConfig, content);

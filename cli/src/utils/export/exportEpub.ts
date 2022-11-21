@@ -8,13 +8,7 @@ export default async (
   bookConfig: BookConfig,
   convertedContent: any
 ): Promise<Buffer | void> => {
-  // const chapterArray = [];
   console.log(chalk.blueBright(`Exporting epub...`));
-  // if (!convertedContent?.chapters)
-  //   throw new Error("No chapters found when converting to Epub!")
-
-  // // We need to check for sections. If they exist, insert them into the array
-  // console.log(bookConfig.bookTitle)
 
   try {
     let content = await epub({ ...bookConfig }, convertedContent);

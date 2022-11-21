@@ -1,7 +1,10 @@
 import showdown from "showdown";
 import fs from "fs/promises";
 
-export default async (chapterArray: any[]): Promise<any> => {
+export default async (
+  chapterArray: any[],
+  manuscriptPath: string
+): Promise<any> => {
   const converter = new showdown.Converter();
 
   // We need to recursively list all folders within manuscript and create chapters for them.
@@ -16,7 +19,7 @@ export default async (chapterArray: any[]): Promise<any> => {
         return convertedChapter;
       }
       const content = await fs.readFile(
-        `testbook\\manuscript\\${chapter.path}`
+        `${manuscriptPath}\\manuscript\\${chapter.path}`
       );
       convertedChapter.content = converter.makeHtml(content.toString());
       return convertedChapter;

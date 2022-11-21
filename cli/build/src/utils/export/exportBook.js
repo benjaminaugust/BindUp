@@ -15,18 +15,24 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const chalk_1 = __importDefault(require("chalk"));
 const BookTypes_1 = require("../../types/BookTypes");
 const exportEpub_1 = __importDefault(require("./exportEpub"));
-const path_1 = __importDefault(require("path"));
 const getFonts_1 = __importDefault(require("../../book-styles/getFonts"));
 const markdownToHtml_1 = __importDefault(require("../convert/markdownToHtml"));
 const convertChapters_1 = __importDefault(require("../convert/convertChapters"));
 exports.default = (bookConfig) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const manuscriptPath = path_1.default.join("", bookConfig.manuscript);
+        const manuscriptPath = bookConfig.manuscript;
         const chapterArray = (0, convertChapters_1.default)(manuscriptPath);
-        if ((bookConfig === null || bookConfig === void 0 ? void 0 : bookConfig.css) === undefined)
+        if (bookConfig.css === undefined)
             bookConfig.css = "";
+        // try {
+        //   const { cssPath } = bookConfig;
+        //   if (cssPath && isValidPath(cssPath))
+        //     bookConfig.css += await getCSS(cssPath);
+        // } catch (error) {
+        //   console.error(chalk.redBright("Failed to load CSS", error));
+        // }
         bookConfig.css += (0, getFonts_1.default)(bookConfig);
-        const convertedChapters = yield (0, markdownToHtml_1.default)(chapterArray);
+        const convertedChapters = yield (0, markdownToHtml_1.default)(chapterArray, manuscriptPath);
         return exportBasedOnFormat(bookConfig, convertedChapters);
     }
     catch (err) {

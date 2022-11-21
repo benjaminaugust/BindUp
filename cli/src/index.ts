@@ -1,6 +1,6 @@
 #! /usr/bin/env node
 import { program } from "commander";
-import type { BookConfig } from "./types/BookTypes";
+import type { BookConfig } from "./types/BookConfig";
 import exportBook from "./utils/export/exportBook";
 import { initSchemas } from "./utils/schema/initSchema";
 import { validateBookConfig } from "./utils/schema/validateBookConfig";
