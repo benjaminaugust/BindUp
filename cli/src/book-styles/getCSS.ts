@@ -1,9 +1,11 @@
-import path from "path";
 import fs from "fs/promises";
 
-export default async (cssPath: string): Promise<string> => {
+export default async (cssFile: string): Promise<string> => {
   try {
-    const cssFile = await fs.readFile(cssPath);
-  } catch (error) {}
-  return "";
+    const rawFile = await fs.readFile(cssFile);
+    return rawFile.toString();
+  } catch (error) {
+    console.log("You specified a CSS file, but it failed to load.", error);
+    return "";
+  }
 };

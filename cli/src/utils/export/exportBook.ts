@@ -15,13 +15,16 @@ export default async (bookConfig: BookConfig): Promise<Buffer | void> => {
     const chapterArray = convertChapters(manuscriptPath);
 
     if (bookConfig.css === undefined) bookConfig.css = "";
-    // try {
-    //   const { cssPath } = bookConfig;
-    //   if (cssPath && isValidPath(cssPath))
-    //     bookConfig.css += await getCSS(cssPath);
-    // } catch (error) {
-    //   console.error(chalk.redBright("Failed to load CSS", error));
-    // }
+    try {
+      const { cssFile } = bookConfig;
+      if (cssFile && isValidPath(cssFile)) {
+        console.log(chalk.blueBright(`Loading CSS File ${cssFile} ...`));
+        bookConfig.css += await getCSS(cssFile);
+        bookConfig.css += " ";
+      }
+    } catch (error) {
+      console.error(chalk.redBright("Failed to load CSS", error));
+    }
 
     bookConfig.css += getFonts(bookConfig);
 

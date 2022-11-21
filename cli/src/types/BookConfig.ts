@@ -45,7 +45,7 @@ export type BookConfig = {
   /**A CSS string to style your epub. */
   css?: string;
   /**The path to a CSS file. */
-  cssPath: string;
+  cssFile: string;
   /**Array of fonts to include */
   fonts?: {
     filename: string;

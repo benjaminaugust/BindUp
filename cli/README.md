@@ -46,11 +46,11 @@ Example `book-config.json`:
 ```json
 {
   "author": "Benjamin August",
-      "title": "Book 1: Welcome to the Multiverse",
-      "manuscript": "./myBookDirectory",
-    "formats": [
-        "epub"
-    ]
+  "title": "Book 1: Welcome to the Multiverse",
+  "manuscript": "./myBookDirectory",
+  "formats": [
+      "epub"
+  ]
 }
 ```
 

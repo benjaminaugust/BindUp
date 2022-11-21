@@ -76,7 +76,7 @@
             "description": "A CSS string that overrides default styles.",
             "type": "string"
         },
-        "cssPath": {
+        "cssFile": {
             "description": "The path to a CSS file.",
             "type": "string"
         },

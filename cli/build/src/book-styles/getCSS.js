@@ -13,10 +13,13 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const promises_1 = __importDefault(require("fs/promises"));
-exports.default = (cssPath) => __awaiter(void 0, void 0, void 0, function* () {
+exports.default = (cssFile) => __awaiter(void 0, void 0, void 0, function* () {
     try {
-        const cssFile = yield promises_1.default.readFile(cssPath);
+        const rawFile = yield promises_1.default.readFile(cssFile);
+        return rawFile.toString();
     }
-    catch (error) { }
-    return "";
+    catch (error) {
+        console.log("You specified a CSS file, but it failed to load.", error);
+        return "";
+    }
 });
