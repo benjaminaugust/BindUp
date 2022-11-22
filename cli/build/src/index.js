@@ -24,18 +24,16 @@ const process_1 = __importDefault(require("process"));
 const chalk_1 = __importDefault(require("chalk"));
 const package_json_1 = require("../package.json");
 const generateBook = (configPath) => __awaiter(void 0, void 0, void 0, function* () {
+    const { outdir, verbose } = commander_1.program.opts();
     const rawConfigFile = yield promises_1.default.readFile(path_1.default.join(process_1.default.cwd(), configPath));
     const rawConfigString = rawConfigFile.toString();
     const bookConfig = JSON.parse(rawConfigString);
-    const { outdir } = commander_1.program.opts();
     if (outdir)
         bookConfig.outDir = outdir;
-    console.log(chalk_1.default.blueBright(`Validating ${configPath}`));
-    const ajv = (0, initSchema_1.initSchemas)();
-    if (!(0, validateBookConfig_1.validateBookConfig)(ajv, bookConfig)) {
-        return console.error(chalk_1.default.yellowBright(`\nFailed to render "${(bookConfig === null || bookConfig === void 0 ? void 0 : bookConfig.title) || "book"}"\n`));
-    }
-    const epub = yield (0, exportBook_1.default)(bookConfig);
+    const ajv = (0, initSchema_1.initSchemas)(verbose);
+    if (!(0, validateBookConfig_1.validateBookConfig)(ajv, bookConfig, verbose))
+        return;
+    const epub = yield (0, exportBook_1.default)(bookConfig, verbose);
     if (epub === null) {
         return console.error(chalk_1.default.redBright(`\nFailed to render "${(bookConfig === null || bookConfig === void 0 ? void 0 : bookConfig.title) || "book"}"\n`));
     }
@@ -47,6 +45,8 @@ commander_1.program
     .command("render <book-config>")
     .description("Render your book into an epub file")
     .action(cliMethod);
-commander_1.program.option("-o, --outdir <directory>", "Set the directory the book will be rendered to");
+commander_1.program
+    .option("-o, --outdir <directory>", "Set the directory the book will be rendered to")
+    .option("--verbose", "Print verbose messages to the terminal while rendering");
 commander_1.program.version(package_json_1.version, "-v, --version", "output the current version of bindup");
 commander_1.program.parse();

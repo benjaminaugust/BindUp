@@ -1,51 +1,57 @@
 import epub from "epub-gen-memory";
 import type { BookConfig } from "../../types/BookConfig";
 import fs from "fs/promises";
-import chalk from "chalk";
 import path from "path";
+import printRed from "../printRed";
+import printBlue from "../printBlue";
+import printWhite from "../printWhite";
+import throwIfPathInvalid from "../throwIfPathInvalid";
 
 export default async (
   bookConfig: BookConfig,
-  convertedContent: any
+  convertedContent: any,
+  verbose = false
 ): Promise<Buffer | void> => {
-  console.log(chalk.blueBright(`Exporting epub...`));
-
+  printBlue(`Exporting epub...`);
   try {
     let content = await epub({ ...bookConfig }, convertedContent);
-    await writeEpub(bookConfig, content);
+    await writeEpub(bookConfig, content, verbose);
     return content;
   } catch (err: any) {
-    return console.error(
-      chalk.redBright(`Failed to render. ${bookConfig?.title}`, err)
-    );
+    return printRed(`Failed to render. ${bookConfig?.title}`, err);
   }
 };
 
 const writeEpub = async (
   bookConfig: BookConfig,
-  content: Buffer
+  content: Buffer,
+  verbose = false
 ): Promise<void> => {
-  const outPath = path.join(
-    `${bookConfig.outDir ?? ""}`,
-    `${bookConfig.title.replace(" ", "-").replace(":", "").replace(",", "")}`
-  );
   try {
-    if (bookConfig.outDir)
-      await fs.mkdir(bookConfig.outDir, { recursive: true });
+    const outPath = path.join(
+      `${bookConfig.outDir ?? ""}`,
+      `${bookConfig.title.replace(" ", "-").replace(":", "").replace(",", "")}`
+    );
+
+    if (verbose) printBlue(`Writing epub to ${outPath}...`);
+
+    throwIfPathInvalid(outPath, verbose);
+
+    const { outDir } = bookConfig;
+    if (outDir) {
+      throwIfPathInvalid(outDir);
+      await fs.mkdir(outDir, { recursive: true });
+    }
 
     await fs.writeFile(outPath, content);
-    console.log(
-      chalk.whiteBright(
-        `Successfully generated ${bookConfig.title} in ${
-          bookConfig.outDir || "the current directory"
-        }!`
-      )
+    printWhite(
+      `Successfully generated ${bookConfig.title} in ${
+        bookConfig.outDir || "the current directory"
+      }!`
     );
   } catch (err: any) {
     if (err.code === "ENOENT") {
-      console.error(
-        chalk.redBright(`Failed to write Ebook file to ${outPath}`)
-      );
+      throw new Error(`Failed to write Ebook file. \n${err}`);
     }
     throw err;
   }

@@ -14,31 +14,40 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const epub_gen_memory_1 = __importDefault(require("epub-gen-memory"));
 const promises_1 = __importDefault(require("fs/promises"));
-const chalk_1 = __importDefault(require("chalk"));
 const path_1 = __importDefault(require("path"));
-exports.default = (bookConfig, convertedContent) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(chalk_1.default.blueBright(`Exporting epub...`));
+const printRed_1 = __importDefault(require("../printRed"));
+const printBlue_1 = __importDefault(require("../printBlue"));
+const printWhite_1 = __importDefault(require("../printWhite"));
+const throwIfPathInvalid_1 = __importDefault(require("../throwIfPathInvalid"));
+exports.default = (bookConfig, convertedContent, verbose = false) => __awaiter(void 0, void 0, void 0, function* () {
+    (0, printBlue_1.default)(`Exporting epub...`);
     try {
         let content = yield (0, epub_gen_memory_1.default)(Object.assign({}, bookConfig), convertedContent);
-        yield writeEpub(bookConfig, content);
+        yield writeEpub(bookConfig, content, verbose);
         return content;
     }
     catch (err) {
-        return console.error(chalk_1.default.redBright(`Failed to render. ${bookConfig === null || bookConfig === void 0 ? void 0 : bookConfig.title}`, err));
+        return (0, printRed_1.default)(`Failed to render. ${bookConfig === null || bookConfig === void 0 ? void 0 : bookConfig.title}`, err);
     }
 });
-const writeEpub = (bookConfig, content) => __awaiter(void 0, void 0, void 0, function* () {
+const writeEpub = (bookConfig, content, verbose = false) => __awaiter(void 0, void 0, void 0, function* () {
     var _a;
-    const outPath = path_1.default.join(`${(_a = bookConfig.outDir) !== null && _a !== void 0 ? _a : ""}`, `${bookConfig.title.replace(" ", "-").replace(":", "").replace(",", "")}`);
     try {
-        if (bookConfig.outDir)
-            yield promises_1.default.mkdir(bookConfig.outDir, { recursive: true });
+        const outPath = path_1.default.join(`${(_a = bookConfig.outDir) !== null && _a !== void 0 ? _a : ""}`, `${bookConfig.title.replace(" ", "-").replace(":", "").replace(",", "")}`);
+        if (verbose)
+            (0, printBlue_1.default)(`Writing epub to ${outPath}...`);
+        (0, throwIfPathInvalid_1.default)(outPath, verbose);
+        const { outDir } = bookConfig;
+        if (outDir) {
+            (0, throwIfPathInvalid_1.default)(outDir);
+            yield promises_1.default.mkdir(outDir, { recursive: true });
+        }
         yield promises_1.default.writeFile(outPath, content);
-        console.log(chalk_1.default.whiteBright(`Successfully generated ${bookConfig.title} in ${bookConfig.outDir || "the current directory"}!`));
+        (0, printWhite_1.default)(`Successfully generated ${bookConfig.title} in ${bookConfig.outDir || "the current directory"}!`);
     }
     catch (err) {
         if (err.code === "ENOENT") {
-            console.error(chalk_1.default.redBright(`Failed to write Ebook file to ${outPath}`));
+            throw new Error(`Failed to write Ebook file. \n${err}`);
         }
         throw err;
     }

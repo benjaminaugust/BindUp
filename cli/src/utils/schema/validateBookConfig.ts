@@ -4,31 +4,43 @@ import chalk from "chalk";
 
 export const validateBookConfig = (
   ajv: AJV,
-  bookConfig: BookConfig
+  bookConfig: BookConfig,
+  verbose = false
 ): boolean => {
-  const validate = ajv.getSchema("book");
-
-  if (!validate) {
-    console.log("Validate broke");
-    return false;
-  }
-
-  if (validate(bookConfig)) {
-    return true;
-  }
-
-  if (validate.errors) {
+  if (verbose)
     console.log(
-      chalk.bold.black.bgWhite(
-        `\nInvalid book config file. Your book config must match the writedown book config schema. Check the docs.`
-      )
+      chalk.blueBright(`Validating ${bookConfig.title}'s config file`)
     );
-    let x = 0;
-    for (const err of validate.errors) {
-      if (err.instancePath)
-        console.error(chalk.red.bold("\nAt " + err.instancePath));
-      console.error(chalk.red.bold("\nBook config error: " + err.message));
+
+  try {
+    const validate = ajv.getSchema("book");
+    if (!validate)
+      throw new Error("Fatal bindup error. Book schema did not load.");
+
+    if (validate(bookConfig)) {
+      if (verbose)
+        console.log(chalk.blueBright("Config successfully validated!"));
+      return true;
     }
+
+    if (validate.errors) {
+      throw new Error(
+        `Your configuration file is invalid. Your book config must match the bindup book config schema. Check the docs. The following issues occurred: ${validate.errors.map(
+          (err) =>
+            `\nAt ${err.instancePath} -\nBook config error: ${err.message}`
+        )}`
+      );
+    }
+    // for (const err of validate.errors) {
+    //   if (err.instancePath)
+    //     console.error(
+    //       chalk.redBright(
+    //         `\nAt ${err.instancePath} - \nBook config error: ${err.message}`
+    //       )
+    //     );
+    // }
+  } catch (error) {
+    console.error(chalk.redBright(`\nFailed to validate config file!`, error));
   }
   return false;
 };

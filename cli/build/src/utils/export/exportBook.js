@@ -19,41 +19,50 @@ const getFonts_1 = __importDefault(require("../../book-styles/getFonts"));
 const markdownToHtml_1 = __importDefault(require("../convert/markdownToHtml"));
 const convertChapters_1 = __importDefault(require("../convert/convertChapters"));
 const getCSS_1 = __importDefault(require("../../book-styles/getCSS"));
-const is_valid_path_1 = __importDefault(require("is-valid-path"));
-exports.default = (bookConfig) => __awaiter(void 0, void 0, void 0, function* () {
+const throwIfPathInvalid_1 = __importDefault(require("../throwIfPathInvalid"));
+const printRed_1 = __importDefault(require("../printRed"));
+const printBlue_1 = __importDefault(require("../printBlue"));
+exports.default = (bookConfig, verbose = false) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const manuscriptPath = bookConfig.manuscript;
+        (0, throwIfPathInvalid_1.default)(manuscriptPath, verbose);
         const chapterArray = (0, convertChapters_1.default)(manuscriptPath);
         if (bookConfig.css === undefined)
             bookConfig.css = "";
         try {
             const { cssFile } = bookConfig;
-            if (cssFile && (0, is_valid_path_1.default)(cssFile)) {
+            if (cssFile) {
+                (0, throwIfPathInvalid_1.default)(cssFile, verbose);
                 console.log(chalk_1.default.blueBright(`Loading CSS File ${cssFile} ...`));
-                bookConfig.css += yield (0, getCSS_1.default)(cssFile);
+                bookConfig.css += yield (0, getCSS_1.default)(cssFile, verbose);
                 bookConfig.css += " ";
             }
         }
         catch (error) {
-            console.error(chalk_1.default.redBright("Failed to load CSS", error));
+            (0, printRed_1.default)("You specified a CSS File, but it failed to load.", error);
         }
-        bookConfig.css += (0, getFonts_1.default)(bookConfig);
+        bookConfig.css += (0, getFonts_1.default)(bookConfig, verbose);
         const convertedChapters = yield (0, markdownToHtml_1.default)(chapterArray, manuscriptPath);
-        return exportBasedOnFormat(bookConfig, convertedChapters);
+        return yield exportBasedOnFormat(bookConfig, convertedChapters, verbose);
     }
     catch (err) {
-        return console.log("Failed to generate ebook.", err);
+        return (0, printRed_1.default)("Failed to export ebook.", err);
     }
 });
-const exportBasedOnFormat = (bookConfig, convertedContent) => __awaiter(void 0, void 0, void 0, function* () {
-    console.log(chalk_1.default.blueBright(`Rendering to the following formats:`, bookConfig === null || bookConfig === void 0 ? void 0 : bookConfig.formats));
+const exportBasedOnFormat = (bookConfig, convertedContent, verbose = false) => __awaiter(void 0, void 0, void 0, function* () {
+    (0, printBlue_1.default)(`Rendering to the following formats:\n ${bookConfig.formats}`);
     const { formats } = bookConfig;
+    if (verbose)
+        (0, printBlue_1.default)(`Validating your specified formats...`);
     if (!formats)
-        throw new Error("No valid format specified!");
-    formats.forEach((thisFormat) => __awaiter(void 0, void 0, void 0, function* () {
+        throw new Error(`No valid file formats specified. Did you leave the formats array empty?`);
+    const results = yield Promise.allSettled(formats.map((thisFormat) => __awaiter(void 0, void 0, void 0, function* () {
         switch (thisFormat) {
             case BookTypes_1.Format.epub:
-                return yield (0, exportEpub_1.default)(bookConfig, convertedContent);
+                return yield (0, exportEpub_1.default)(bookConfig, convertedContent, verbose);
         }
-    }));
+    })));
+    if (results.length <= 0)
+        throw new Error(`No valid format to render! Your formats include: ${formats}, but bindup can't render any of those`);
+    return results;
 });

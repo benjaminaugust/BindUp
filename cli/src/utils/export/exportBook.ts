@@ -2,57 +2,78 @@ import type { BookConfig } from "../../types/BookConfig";
 import chalk from "chalk";
 import { Format } from "../../types/BookTypes";
 import exportEpub from "./exportEpub";
-import path from "path";
 import getFonts from "../../book-styles/getFonts";
 import markdownToHtml from "../convert/markdownToHtml";
 import convertChapters from "../convert/convertChapters";
 import getCSS from "../../book-styles/getCSS";
-import isValidPath from "is-valid-path";
+import throwIfPathInvalid from "../throwIfPathInvalid";
+import printRed from "../printRed";
+import printBlue from "../printBlue";
 
-export default async (bookConfig: BookConfig): Promise<Buffer | void> => {
+export default async (
+  bookConfig: BookConfig,
+  verbose = false
+): Promise<PromiseSettledResult<Buffer | void>[] | void> => {
   try {
     const manuscriptPath = bookConfig.manuscript;
+
+    throwIfPathInvalid(manuscriptPath, verbose);
+
     const chapterArray = convertChapters(manuscriptPath);
 
     if (bookConfig.css === undefined) bookConfig.css = "";
     try {
       const { cssFile } = bookConfig;
-      if (cssFile && isValidPath(cssFile)) {
+      if (cssFile) {
+        throwIfPathInvalid(cssFile, verbose);
         console.log(chalk.blueBright(`Loading CSS File ${cssFile} ...`));
-        bookConfig.css += await getCSS(cssFile);
+        bookConfig.css += await getCSS(cssFile, verbose);
         bookConfig.css += " ";
       }
     } catch (error) {
-      console.error(chalk.redBright("Failed to load CSS", error));
+      printRed("You specified a CSS File, but it failed to load.", error);
     }
 
-    bookConfig.css += getFonts(bookConfig);
+    bookConfig.css += getFonts(bookConfig, verbose);
 
     const convertedChapters = await markdownToHtml(
       chapterArray,
       manuscriptPath
     );
-    return exportBasedOnFormat(bookConfig, convertedChapters);
+    return await exportBasedOnFormat(bookConfig, convertedChapters, verbose);
   } catch (err) {
-    return console.log("Failed to generate ebook.", err);
+    return printRed("Failed to export ebook.", err);
   }
 };
 
 const exportBasedOnFormat = async (
   bookConfig: BookConfig,
-  convertedContent: any
-): Promise<Buffer | void> => {
-  console.log(
-    chalk.blueBright(`Rendering to the following formats:`, bookConfig?.formats)
-  );
+  convertedContent: any,
+  verbose = false
+): Promise<PromiseSettledResult<Buffer | void>[]> => {
+  printBlue(`Rendering to the following formats:\n ${bookConfig.formats}`);
+
   const { formats } = bookConfig;
 
-  if (!formats) throw new Error("No valid format specified!");
+  if (verbose) printBlue(`Validating your specified formats...`);
+  if (!formats)
+    throw new Error(
+      `No valid file formats specified. Did you leave the formats array empty?`
+    );
 
-  formats.forEach(async (thisFormat) => {
-    switch (thisFormat) {
-      case Format.epub:
-        return await exportEpub(bookConfig, convertedContent);
-    }
-  });
+  const results = await Promise.allSettled(
+    formats.map(async (thisFormat) => {
+      switch (thisFormat) {
+        case Format.epub:
+          return await exportEpub(bookConfig, convertedContent, verbose);
+      }
+    })
+  );
+
+  if (results.length <= 0)
+    throw new Error(
+      `No valid format to render! Your formats include: ${formats}, but bindup can't render any of those`
+    );
+
+  return results;
 };

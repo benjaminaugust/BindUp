@@ -1,7 +1,13 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.default = (bookConfig) => {
+const printBlue_1 = __importDefault(require("../utils/printBlue"));
+exports.default = (bookConfig, verbose = false) => {
     let configCSS = "";
+    if (verbose)
+        logVerboseFontInfo(bookConfig);
     configCSS += getDefaultFont(bookConfig);
     configCSS += getIndentation(bookConfig);
     configCSS += getTocFont(bookConfig);
@@ -42,4 +48,15 @@ const getClassFonts = (bookConfig) => {
         });
     }
     return styles;
+};
+const logVerboseFontInfo = (bookConfig) => {
+    bookConfig.defaultFontFamily &&
+        (0, printBlue_1.default)(`Applying your defaultFontFamily setting...`);
+    bookConfig.indentParagraphs &&
+        (0, printBlue_1.default)(`Applying your indentParagraphs setting...`);
+    bookConfig.tocFontFamily &&
+        (0, printBlue_1.default)(`Applying your tocFontFamily settings...`);
+    bookConfig.headingFontFamilies &&
+        (0, printBlue_1.default)(`Applying your headingFontFamilies settings...`);
+    bookConfig.fontClasses && (0, printBlue_1.default)(`Applying your fontClasses settings...`);
 };

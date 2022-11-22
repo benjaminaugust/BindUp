@@ -1,7 +1,10 @@
 import type { BookConfig } from "../types/BookConfig";
+import printBlue from "../utils/printBlue";
 
-export default (bookConfig: BookConfig): string => {
+export default (bookConfig: BookConfig, verbose = false): string => {
   let configCSS = "";
+
+  if (verbose) logVerboseFontInfo(bookConfig);
 
   configCSS += getDefaultFont(bookConfig);
   configCSS += getIndentation(bookConfig);
@@ -48,4 +51,16 @@ const getClassFonts = (bookConfig: BookConfig) => {
     });
   }
   return styles;
+};
+
+const logVerboseFontInfo = (bookConfig: BookConfig) => {
+  bookConfig.defaultFontFamily &&
+    printBlue(`Applying your defaultFontFamily setting...`);
+  bookConfig.indentParagraphs &&
+    printBlue(`Applying your indentParagraphs setting...`);
+  bookConfig.tocFontFamily &&
+    printBlue(`Applying your tocFontFamily settings...`);
+  bookConfig.headingFontFamilies &&
+    printBlue(`Applying your headingFontFamilies settings...`);
+  bookConfig.fontClasses && printBlue(`Applying your fontClasses settings...`);
 };

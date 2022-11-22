@@ -5,23 +5,32 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateBookConfig = void 0;
 const chalk_1 = __importDefault(require("chalk"));
-const validateBookConfig = (ajv, bookConfig) => {
-    const validate = ajv.getSchema("book");
-    if (!validate) {
-        console.log("Validate broke");
-        return false;
-    }
-    if (validate(bookConfig)) {
-        return true;
-    }
-    if (validate.errors) {
-        console.log(chalk_1.default.bold.black.bgWhite(`\nInvalid book config file. Your book config must match the writedown book config schema. Check the docs.`));
-        let x = 0;
-        for (const err of validate.errors) {
-            if (err.instancePath)
-                console.error(chalk_1.default.red.bold("\nAt " + err.instancePath));
-            console.error(chalk_1.default.red.bold("\nBook config error: " + err.message));
+const validateBookConfig = (ajv, bookConfig, verbose = false) => {
+    if (verbose)
+        console.log(chalk_1.default.blueBright(`Validating ${bookConfig.title}'s config file`));
+    try {
+        const validate = ajv.getSchema("book");
+        if (!validate)
+            throw new Error("Fatal bindup error. Book schema did not load.");
+        if (validate(bookConfig)) {
+            if (verbose)
+                console.log(chalk_1.default.blueBright("Config successfully validated!"));
+            return true;
         }
+        if (validate.errors) {
+            throw new Error(`Your configuration file is invalid. Your book config must match the bindup book config schema. Check the docs. The following issues occurred: ${validate.errors.map((err) => `\nAt ${err.instancePath} -\nBook config error: ${err.message}`)}`);
+        }
+        // for (const err of validate.errors) {
+        //   if (err.instancePath)
+        //     console.error(
+        //       chalk.redBright(
+        //         `\nAt ${err.instancePath} - \nBook config error: ${err.message}`
+        //       )
+        //     );
+        // }
+    }
+    catch (error) {
+        console.error(chalk_1.default.redBright(`\nFailed to validate config file!`, error));
     }
     return false;
 };

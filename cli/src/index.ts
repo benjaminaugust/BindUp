@@ -10,31 +10,26 @@ import process from "process";
 import chalk from "chalk";
 import { version } from "../package.json";
 
-const generateBook = async (configPath: string): Promise<Buffer | void> => {
+const generateBook = async (
+  configPath: string
+): Promise<PromiseSettledResult<void | Buffer>[] | void> => {
+  const { outdir, verbose } = program.opts();
+
   const rawConfigFile = await fs.readFile(path.join(process.cwd(), configPath));
   const rawConfigString = rawConfigFile.toString();
   const bookConfig: BookConfig = JSON.parse(rawConfigString);
 
-  const { outdir } = program.opts();
   if (outdir) bookConfig.outDir = outdir;
 
-  console.log(chalk.blueBright(`Validating ${configPath}`));
-  const ajv = initSchemas();
-  if (!validateBookConfig(ajv, bookConfig)) {
-    return console.error(
-      chalk.yellowBright(
-        `\nFailed to render "${bookConfig?.title || "book"}"\n`
-      )
-    );
-  }
+  const ajv = initSchemas(verbose);
+  if (!validateBookConfig(ajv, bookConfig, verbose)) return;
 
-  const epub = await exportBook(bookConfig);
+  const epub = await exportBook(bookConfig, verbose);
   if (epub === null) {
     return console.error(
       chalk.redBright(`\nFailed to render "${bookConfig?.title || "book"}"\n`)
     );
   }
-
   return epub;
 };
 
@@ -45,10 +40,15 @@ program
   .description("Render your book into an epub file")
   .action(cliMethod);
 
-program.option(
-  "-o, --outdir <directory>",
-  "Set the directory the book will be rendered to"
-);
+program
+  .option(
+    "-o, --outdir <directory>",
+    "Set the directory the book will be rendered to"
+  )
+  .option(
+    "--verbose",
+    "Print verbose messages to the terminal while rendering"
+  );
 
 program.version(
   version,
