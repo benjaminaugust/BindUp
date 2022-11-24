@@ -4,17 +4,18 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.validateBookConfig = void 0;
-const chalk_1 = __importDefault(require("chalk"));
+const printWhite_1 = __importDefault(require("../printWhite"));
+const printRed_1 = __importDefault(require("../printRed"));
 const validateBookConfig = (ajv, bookConfig, verbose = false) => {
     if (verbose)
-        console.log(chalk_1.default.blueBright(`Validating ${bookConfig.title}'s config file`));
+        (0, printWhite_1.default)(`Validating ${bookConfig.title}'s config file`);
     try {
         const validate = ajv.getSchema("book");
         if (!validate)
             throw new Error("Fatal bindup error. Book schema did not load.");
         if (validate(bookConfig)) {
             if (verbose)
-                console.log(chalk_1.default.blueBright("Config successfully validated!"));
+                (0, printWhite_1.default)("Config successfully validated!");
             return true;
         }
         if (validate.errors) {
@@ -30,7 +31,7 @@ const validateBookConfig = (ajv, bookConfig, verbose = false) => {
         // }
     }
     catch (error) {
-        console.error(chalk_1.default.redBright(`\nFailed to validate config file!`, error));
+        (0, printRed_1.default)(`\nFailed to validate config file!`, error);
     }
     return false;
 };

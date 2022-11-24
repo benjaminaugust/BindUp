@@ -3,7 +3,6 @@ import type { BookConfig } from "../../types/BookConfig";
 import fs from "fs/promises";
 import path from "path";
 import printRed from "../printRed";
-import printBlue from "../printBlue";
 import printWhite from "../printWhite";
 import throwIfPathInvalid from "../throwIfPathInvalid";
 
@@ -12,7 +11,7 @@ export default async (
   convertedContent: any,
   verbose = false
 ): Promise<Buffer | void> => {
-  printBlue(`Exporting epub...`);
+  printWhite(`Exporting epub...`);
   try {
     let content = await epub({ ...bookConfig }, convertedContent);
     await writeEpub(bookConfig, content, verbose);
@@ -33,7 +32,7 @@ const writeEpub = async (
       `${bookConfig.title.replace(" ", "-").replace(":", "").replace(",", "")}`
     );
 
-    if (verbose) printBlue(`Writing epub to ${outPath}...`);
+    if (verbose) printWhite(`Writing epub to ${outPath}"...`);
 
     throwIfPathInvalid(outPath, verbose);
 
@@ -45,7 +44,7 @@ const writeEpub = async (
 
     await fs.writeFile(outPath, content);
     printWhite(
-      `Successfully generated ${bookConfig.title} in ${
+      `Successfully generated ${bookConfig.title}" in ${
         bookConfig.outDir || "the current directory"
       }!`
     );

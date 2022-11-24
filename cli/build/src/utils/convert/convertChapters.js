@@ -4,12 +4,17 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const fs_readdir_recursive_1 = __importDefault(require("fs-readdir-recursive"));
-const chalk_1 = __importDefault(require("chalk"));
-exports.default = (manuscriptPath) => {
-    console.log(chalk_1.default.blueBright(`Converting files from "${manuscriptPath}"...`));
+const printWhite_1 = __importDefault(require("../printWhite"));
+exports.default = (manuscriptPath, verbose = false) => {
+    (0, printWhite_1.default)(`Converting files from "${manuscriptPath}"...`);
     const rawContents = (0, fs_readdir_recursive_1.default)(manuscriptPath);
-    const chapterArray = [];
     const directoryList = rawContents.map((item) => item.replace("manuscript\\", ""));
+    return createChapters(directoryList, verbose);
+};
+const createChapters = (directoryList, verbose = false) => {
+    const chapterArray = [];
+    if (verbose)
+        (0, printWhite_1.default)(`Converting chapters...`);
     directoryList.forEach((item) => {
         item
             .split("\\")
@@ -29,5 +34,7 @@ exports.default = (manuscriptPath) => {
             }
         });
     });
+    if (verbose)
+        (0, printWhite_1.default)(`Got the following chapters: ${JSON.stringify(chapterArray, null, 2)}`);
     return chapterArray;
 };

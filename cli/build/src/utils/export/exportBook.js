@@ -12,7 +12,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-const chalk_1 = __importDefault(require("chalk"));
 const BookTypes_1 = require("../../types/BookTypes");
 const exportEpub_1 = __importDefault(require("./exportEpub"));
 const getFonts_1 = __importDefault(require("../../book-styles/getFonts"));
@@ -21,7 +20,7 @@ const convertChapters_1 = __importDefault(require("../convert/convertChapters"))
 const getCSS_1 = __importDefault(require("../../book-styles/getCSS"));
 const throwIfPathInvalid_1 = __importDefault(require("../throwIfPathInvalid"));
 const printRed_1 = __importDefault(require("../printRed"));
-const printBlue_1 = __importDefault(require("../printBlue"));
+const printWhite_1 = __importDefault(require("../printWhite"));
 exports.default = (bookConfig, verbose = false) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         const manuscriptPath = bookConfig.manuscript;
@@ -33,7 +32,7 @@ exports.default = (bookConfig, verbose = false) => __awaiter(void 0, void 0, voi
             const { cssFile } = bookConfig;
             if (cssFile) {
                 (0, throwIfPathInvalid_1.default)(cssFile, verbose);
-                console.log(chalk_1.default.blueBright(`Loading CSS File ${cssFile} ...`));
+                (0, printWhite_1.default)(`Loading CSS File ${cssFile} ...`);
                 bookConfig.css += yield (0, getCSS_1.default)(cssFile, verbose);
                 bookConfig.css += " ";
             }
@@ -50,10 +49,10 @@ exports.default = (bookConfig, verbose = false) => __awaiter(void 0, void 0, voi
     }
 });
 const exportBasedOnFormat = (bookConfig, convertedContent, verbose = false) => __awaiter(void 0, void 0, void 0, function* () {
-    (0, printBlue_1.default)(`Rendering to the following formats:\n ${bookConfig.formats}`);
+    (0, printWhite_1.default)(`Rendering to the following formats:\n ${bookConfig.formats}`);
     const { formats } = bookConfig;
     if (verbose)
-        (0, printBlue_1.default)(`Validating your specified formats...`);
+        (0, printWhite_1.default)(`Validating your specified formats...`);
     if (!formats)
         throw new Error(`No valid file formats specified. Did you leave the formats array empty?`);
     const results = yield Promise.allSettled(formats.map((thisFormat) => __awaiter(void 0, void 0, void 0, function* () {

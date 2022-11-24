@@ -1,15 +1,21 @@
 import readdirRecursive from "fs-readdir-recursive";
-import chalk from "chalk";
+import printWhite from "../printWhite";
 
-export default (manuscriptPath: string): any[] => {
-  console.log(chalk.blueBright(`Converting files from "${manuscriptPath}"...`));
+export default (manuscriptPath: string, verbose = false): any[] => {
+  printWhite(`Converting files from "${manuscriptPath}"...`);
   const rawContents = readdirRecursive(manuscriptPath);
-
-  const chapterArray: any[] = [];
 
   const directoryList = rawContents.map((item) =>
     item.replace("manuscript\\", "")
   );
+
+  return createChapters(directoryList, verbose);
+};
+
+const createChapters = (directoryList: string[], verbose = false): any[] => {
+  const chapterArray: any[] = [];
+
+  if (verbose) printWhite(`Converting chapters...`);
 
   directoryList.forEach((item) => {
     item
@@ -30,6 +36,11 @@ export default (manuscriptPath: string): any[] => {
         }
       });
   });
+
+  if (verbose)
+    printWhite(
+      `Got the following chapters: ${JSON.stringify(chapterArray, null, 2)}`
+    );
 
   return chapterArray;
 };

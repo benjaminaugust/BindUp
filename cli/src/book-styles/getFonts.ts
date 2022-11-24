@@ -1,5 +1,5 @@
 import type { BookConfig } from "../types/BookConfig";
-import printBlue from "../utils/printBlue";
+import printWhite from "../utils/printWhite";
 
 export default (bookConfig: BookConfig, verbose = false): string => {
   let configCSS = "";
@@ -55,12 +55,12 @@ const getClassFonts = (bookConfig: BookConfig) => {
 
 const logVerboseFontInfo = (bookConfig: BookConfig) => {
   bookConfig.defaultFontFamily &&
-    printBlue(`Applying your defaultFontFamily setting...`);
+    printWhite(`Applying your defaultFontFamily setting...`);
   bookConfig.indentParagraphs &&
-    printBlue(`Applying your indentParagraphs setting...`);
+    printWhite(`Applying your indentParagraphs setting...`);
   bookConfig.tocFontFamily &&
-    printBlue(`Applying your tocFontFamily settings...`);
+    printWhite(`Applying your tocFontFamily settings...`);
   bookConfig.headingFontFamilies &&
-    printBlue(`Applying your headingFontFamilies settings...`);
-  bookConfig.fontClasses && printBlue(`Applying your fontClasses settings...`);
+    printWhite(`Applying your headingFontFamilies settings...`);
+  bookConfig.fontClasses && printWhite(`Applying your fontClasses settings...`);
 };

@@ -1,5 +1,4 @@
 import type { BookConfig } from "../../types/BookConfig";
-import chalk from "chalk";
 import { Format } from "../../types/BookTypes";
 import exportEpub from "./exportEpub";
 import getFonts from "../../book-styles/getFonts";
@@ -8,7 +7,7 @@ import convertChapters from "../convert/convertChapters";
 import getCSS from "../../book-styles/getCSS";
 import throwIfPathInvalid from "../throwIfPathInvalid";
 import printRed from "../printRed";
-import printBlue from "../printBlue";
+import printWhite from "../printWhite";
 
 export default async (
   bookConfig: BookConfig,
@@ -26,7 +25,7 @@ export default async (
       const { cssFile } = bookConfig;
       if (cssFile) {
         throwIfPathInvalid(cssFile, verbose);
-        console.log(chalk.blueBright(`Loading CSS File ${cssFile} ...`));
+        printWhite(`Loading CSS File ${cssFile} ...`);
         bookConfig.css += await getCSS(cssFile, verbose);
         bookConfig.css += " ";
       }
@@ -51,11 +50,11 @@ const exportBasedOnFormat = async (
   convertedContent: any,
   verbose = false
 ): Promise<PromiseSettledResult<Buffer | void>[]> => {
-  printBlue(`Rendering to the following formats:\n ${bookConfig.formats}`);
+  printWhite(`Rendering to the following formats:\n ${bookConfig.formats}`);
 
   const { formats } = bookConfig;
 
-  if (verbose) printBlue(`Validating your specified formats...`);
+  if (verbose) printWhite(`Validating your specified formats...`);
   if (!formats)
     throw new Error(
       `No valid file formats specified. Did you leave the formats array empty?`

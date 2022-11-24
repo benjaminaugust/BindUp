@@ -13,11 +13,11 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const promises_1 = __importDefault(require("fs/promises"));
-const printBlue_1 = __importDefault(require("../utils/printBlue"));
+const printWhite_1 = __importDefault(require("../utils/printWhite"));
 const throwIfPathInvalid_1 = __importDefault(require("../utils/throwIfPathInvalid"));
 exports.default = (cssFile, verbose = false) => __awaiter(void 0, void 0, void 0, function* () {
     if (verbose)
-        (0, printBlue_1.default)(`Trying to load css from ${cssFile} ...`);
+        (0, printWhite_1.default)(`Trying to load css from ${cssFile} ...`);
     (0, throwIfPathInvalid_1.default)(cssFile);
     const rawFile = yield promises_1.default.readFile(cssFile);
     return rawFile.toString();

@@ -7,13 +7,16 @@ import { validateBookConfig } from "./utils/schema/validateBookConfig";
 import fs from "fs/promises";
 import path from "path";
 import process from "process";
-import chalk from "chalk";
 import { version } from "../package.json";
+import printRed from "./utils/printRed";
+import printBlue from "./utils/printBlue";
 
 const generateBook = async (
   configPath: string
 ): Promise<PromiseSettledResult<void | Buffer>[] | void> => {
   const { outdir, verbose } = program.opts();
+
+  if (verbose) printBlue(`Printing verbose information...`);
 
   const rawConfigFile = await fs.readFile(path.join(process.cwd(), configPath));
   const rawConfigString = rawConfigFile.toString();
@@ -25,9 +28,12 @@ const generateBook = async (
   if (!validateBookConfig(ajv, bookConfig, verbose)) return;
 
   const epub = await exportBook(bookConfig, verbose);
-  if (epub === null) {
+  if (!epub) {
     return console.error(
-      chalk.redBright(`\nFailed to render "${bookConfig?.title || "book"}"\n`)
+      printRed(
+        `\nFailed to render ${bookConfig?.title || "book"}"\n`,
+        new Error("Epub is null somehow.")
+      )
     );
   }
   return epub;

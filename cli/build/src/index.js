@@ -21,10 +21,13 @@ const validateBookConfig_1 = require("./utils/schema/validateBookConfig");
 const promises_1 = __importDefault(require("fs/promises"));
 const path_1 = __importDefault(require("path"));
 const process_1 = __importDefault(require("process"));
-const chalk_1 = __importDefault(require("chalk"));
 const package_json_1 = require("../package.json");
+const printRed_1 = __importDefault(require("./utils/printRed"));
+const printBlue_1 = __importDefault(require("./utils/printBlue"));
 const generateBook = (configPath) => __awaiter(void 0, void 0, void 0, function* () {
     const { outdir, verbose } = commander_1.program.opts();
+    if (verbose)
+        (0, printBlue_1.default)(`Printing verbose information...`);
     const rawConfigFile = yield promises_1.default.readFile(path_1.default.join(process_1.default.cwd(), configPath));
     const rawConfigString = rawConfigFile.toString();
     const bookConfig = JSON.parse(rawConfigString);
@@ -34,8 +37,8 @@ const generateBook = (configPath) => __awaiter(void 0, void 0, void 0, function*
     if (!(0, validateBookConfig_1.validateBookConfig)(ajv, bookConfig, verbose))
         return;
     const epub = yield (0, exportBook_1.default)(bookConfig, verbose);
-    if (epub === null) {
-        return console.error(chalk_1.default.redBright(`\nFailed to render "${(bookConfig === null || bookConfig === void 0 ? void 0 : bookConfig.title) || "book"}"\n`));
+    if (!epub) {
+        return console.error((0, printRed_1.default)(`\nFailed to render ${(bookConfig === null || bookConfig === void 0 ? void 0 : bookConfig.title) || "book"}"\n`, new Error("Epub is null somehow.")));
     }
     return epub;
 });

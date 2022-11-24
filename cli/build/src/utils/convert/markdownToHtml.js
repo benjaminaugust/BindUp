@@ -14,16 +14,29 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const showdown_1 = __importDefault(require("showdown"));
 const promises_1 = __importDefault(require("fs/promises"));
-exports.default = (chapterArray, manuscriptPath) => __awaiter(void 0, void 0, void 0, function* () {
+const printWhite_1 = __importDefault(require("../printWhite"));
+const throwIfPathInvalid_1 = __importDefault(require("../throwIfPathInvalid"));
+exports.default = (chapterArray, manuscriptPath, verbose = false) => __awaiter(void 0, void 0, void 0, function* () {
     const converter = new showdown_1.default.Converter();
     // We need to recursively list all folders within manuscript and create chapters for them.
     return Promise.all(chapterArray.map((chapter) => __awaiter(void 0, void 0, void 0, function* () {
         const convertedChapter = Object.assign(Object.assign({}, chapter), { content: "" });
+        const path = `${manuscriptPath}\\manuscript\\${chapter.path}`;
+        if (verbose)
+            (0, printWhite_1.default)(`Converting ${chapter.title}" at ${path}" to HTML...`);
         if (chapter.isSection) {
             return convertedChapter;
         }
-        const content = yield promises_1.default.readFile(`${manuscriptPath}\\manuscript\\${chapter.path}`);
-        convertedChapter.content = converter.makeHtml(content.toString());
-        return convertedChapter;
+        try {
+            (0, throwIfPathInvalid_1.default)(path, verbose);
+            const content = yield promises_1.default.readFile(path);
+            convertedChapter.content = converter.makeHtml(content.toString());
+            if (verbose)
+                (0, printWhite_1.default)(`Successfully converted ${chapter.title}" at ${path}`);
+            return convertedChapter;
+        }
+        catch (error) {
+            throw new Error(`Failed to convert ${path}": \n ${error}`);
+        }
     })));
 });
