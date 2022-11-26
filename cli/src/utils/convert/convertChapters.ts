@@ -107,7 +107,8 @@ const createChapters = (directoryList: string[], verbose = false): any[] => {
 
   const reOrder = (segments: any) => {
     const orderList = segments.map((segment: any) => segment.order);
-    for (let i = 1; i <= orderList[orderList.length - 1]; i++) {
+    const highestOrder = Math.max(...orderList);
+    for (let i = 1; i <= highestOrder; i++) {
       const start = orderList.indexOf(i);
       const endIndex = orderList.lastIndexOf(i);
 
@@ -116,13 +117,13 @@ const createChapters = (directoryList: string[], verbose = false): any[] => {
       const end = endIndex + 1;
       const setToOrder = segments.slice(start, end);
       // console.log(`i: ${i}, start: ${start}, end: ${end}`);
-      // if (i == 16) console.log("Set to order", setToOrder);
+      // if (i == 17) console.log("Set to order", setToOrder);
       const x = setToOrder
         .map((item: any) => {
-          const { splits } = item;
-          const currSplit = splits[1];
+          const currSplit = item.splits[1];
+          // if (j > 1) printBlue(`\nCurrsplit: ${currSplit}`);
           const justTheNumber = currSplit.split("~ ")[0];
-          // if (i == 16)
+          // if (i == 17)
           //   console.log(`split: ${currSplit}, number: ${justTheNumber}`);
           const order = parseInt(justTheNumber);
           return {
@@ -135,15 +136,11 @@ const createChapters = (directoryList: string[], verbose = false): any[] => {
       const segment1 = segments.slice(0, start);
       const segment2 = segments.slice(end);
       segments = [...segment1, ...x, ...segment2];
-      // if (i == 16) console.log("Set after reorder", x);
-      // if (i == 16) console.log("New segments", segments);
+      // if (i == 17) console.log("Set after reorder", x);
+      // if (i == 17) console.log("New segments", segments);
     }
     return segments;
   };
-
-  /**
-   *
-   */
 
   const finalSegments = reOrder(orderedSegments);
 
@@ -162,7 +159,7 @@ const createChapters = (directoryList: string[], verbose = false): any[] => {
         if (splits.length < 1)
           throw new Error(`Invalid file or folder name: "${segment}"`);
         // console.log(chalk.cyan(splits));
-        const result = splits.filter((_, i) => i > 0).join();
+        const result = splits.filter((_: any, i: number) => i > 0).join();
         // console.log(chalk.cyan(result));
         const formattedSegment = {
           rawName: result,
@@ -185,10 +182,10 @@ const createChapters = (directoryList: string[], verbose = false): any[] => {
       });
   });
 
-  // if (verbose)
-  printWhite(
-    `Got the following chapters: ${JSON.stringify(chapterArray, null, 2)}`
-  );
+  if (verbose)
+    printWhite(
+      `Got the following chapters: ${JSON.stringify(chapterArray, null, 2)}`
+    );
 
   // console.log("ChapterArray", JSON.stringify(chapterArray, null, 2));
 
