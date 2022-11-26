@@ -18,8 +18,6 @@ export default async (
 
     throwIfPathInvalid(manuscriptPath, verbose);
 
-    const chapterArray = convertChapters(manuscriptPath);
-
     if (bookConfig.css === undefined) bookConfig.css = "";
     try {
       const { cssFile } = bookConfig;
@@ -34,6 +32,8 @@ export default async (
     }
 
     bookConfig.css += getFonts(bookConfig, verbose);
+
+    const chapterArray = convertChapters(manuscriptPath);
 
     const convertedChapters = await markdownToHtml(
       chapterArray,

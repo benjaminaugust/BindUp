@@ -25,7 +25,6 @@ exports.default = (bookConfig, verbose = false) => __awaiter(void 0, void 0, voi
     try {
         const manuscriptPath = bookConfig.manuscript;
         (0, throwIfPathInvalid_1.default)(manuscriptPath, verbose);
-        const chapterArray = (0, convertChapters_1.default)(manuscriptPath);
         if (bookConfig.css === undefined)
             bookConfig.css = "";
         try {
@@ -41,6 +40,7 @@ exports.default = (bookConfig, verbose = false) => __awaiter(void 0, void 0, voi
             (0, printRed_1.default)("You specified a CSS File, but it failed to load.", error);
         }
         bookConfig.css += (0, getFonts_1.default)(bookConfig, verbose);
+        const chapterArray = (0, convertChapters_1.default)(manuscriptPath);
         const convertedChapters = yield (0, markdownToHtml_1.default)(chapterArray, manuscriptPath);
         return yield exportBasedOnFormat(bookConfig, convertedChapters, verbose);
     }
