@@ -1,6 +1,6 @@
 {
   "name": "bindup",
-  "version": "0.5.14",
+  "version": "0.5.15",
   "description": "static ebook generator",
   "main": "src/index.ts",
   "type": "commonjs",
