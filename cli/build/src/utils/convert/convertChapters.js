@@ -13,7 +13,6 @@ exports.default = (manuscriptPath, verbose = false) => {
     return createChapters(directoryList, verbose);
 };
 const createChapters = (directoryList, verbose = false) => {
-    const chapterArray = [];
     if (verbose)
         (0, printWhite_1.default)(`Converting chapters...`);
     // let currentSection: any;
@@ -94,16 +93,15 @@ const createChapters = (directoryList, verbose = false) => {
                 continue;
             const end = endIndex + 1;
             const setToOrder = segments.slice(start, end);
-            console.log(`i: ${i}, start: ${start}, end: ${end}`);
-            if (i == 16)
-                console.log("Set to order", setToOrder);
+            // console.log(`i: ${i}, start: ${start}, end: ${end}`);
+            // if (i == 16) console.log("Set to order", setToOrder);
             const x = setToOrder
                 .map((item) => {
                 const { splits } = item;
                 const currSplit = splits[1];
                 const justTheNumber = currSplit.split("~ ")[0];
-                if (i == 16)
-                    console.log(`split: ${currSplit}, number: ${justTheNumber}`);
+                // if (i == 16)
+                //   console.log(`split: ${currSplit}, number: ${justTheNumber}`);
                 const order = parseInt(justTheNumber);
                 return Object.assign(Object.assign({}, item), { order: order });
             })
@@ -112,49 +110,51 @@ const createChapters = (directoryList, verbose = false) => {
             const segment1 = segments.slice(0, start);
             const segment2 = segments.slice(end);
             segments = [...segment1, ...x, ...segment2];
-            if (i == 16)
-                console.log("Set after reorder", x);
-            if (i == 16)
-                console.log("New segments", segments);
+            // if (i == 16) console.log("Set after reorder", x);
+            // if (i == 16) console.log("New segments", segments);
         }
+        return segments;
     };
     /**
      *
      */
-    reOrder(orderedSegments);
-    // console.log(JSON.stringify(orderedSegments, null, 2));
-    // directoryList.forEach((item) => {
-    //   item
-    //     .split("\\")
-    //     .map((segment) => {
-    //       const splits = segment.split("~ ");
-    //       if (splits.length < 1)
-    //         throw new Error(`Invalid file or folder name: "${segment}"`);
-    //       // console.log(chalk.cyan(splits));
-    //       const result = splits.filter((_, i) => i > 0).join();
-    //       // console.log(chalk.cyan(result));
-    //       const formattedSegment = {
-    //         rawName: result,
-    //         order: parseInt(splits[0]),
-    //       };
-    //       // console.log(chalk.cyan(JSON.stringify(formattedSegment, null, 2)));
-    //       return formattedSegment;
-    //     })
-    //     .forEach(({ rawName, order }) => {
-    //       if (!chapterArray.some((chapter) => chapter.title === rawName)) {
-    //         const sectionData = {
-    //           title: rawName.replace(".md", ""),
-    //           path: item,
-    //           isSection: !rawName.includes(".md"),
-    //           order,
-    //         };
-    //         // printBlue(rawName);
-    //         chapterArray.push(sectionData);
-    //       }
-    //     });
-    // });
-    if (verbose)
-        (0, printWhite_1.default)(`Got the following chapters: ${JSON.stringify(chapterArray, null, 2)}`);
+    const finalSegments = reOrder(orderedSegments);
+    // console.log(orderedSegments);
+    // console.log(JSON.stringify(finalSegments, null, 2));
+    const sortedDirectoryList = finalSegments.map((segment) => segment.path);
+    const chapterArray = [];
+    sortedDirectoryList.forEach((item) => {
+        item
+            .split("\\")
+            .map((segment) => {
+            const splits = segment.split("~ ");
+            if (splits.length < 1)
+                throw new Error(`Invalid file or folder name: "${segment}"`);
+            // console.log(chalk.cyan(splits));
+            const result = splits.filter((_, i) => i > 0).join();
+            // console.log(chalk.cyan(result));
+            const formattedSegment = {
+                rawName: result,
+                order: parseInt(splits[0]),
+            };
+            // console.log(chalk.cyan(JSON.stringify(formattedSegment, null, 2)));
+            return formattedSegment;
+        })
+            .forEach(({ rawName, order }) => {
+            if (!chapterArray.some((chapter) => chapter.title === rawName)) {
+                const sectionData = {
+                    title: rawName.replace(".md", ""),
+                    path: item,
+                    isSection: !rawName.includes(".md"),
+                    order,
+                };
+                // printBlue(rawName);
+                chapterArray.push(sectionData);
+            }
+        });
+    });
+    // if (verbose)
+    (0, printWhite_1.default)(`Got the following chapters: ${JSON.stringify(chapterArray, null, 2)}`);
     // console.log("ChapterArray", JSON.stringify(chapterArray, null, 2));
     //Cycle through
     //Check every item against each section
