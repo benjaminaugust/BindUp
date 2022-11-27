@@ -103,12 +103,10 @@ its title in your ebook will be "Chapter 1.5".
 
 ### Valid frontmatter options
 
-- `title`: string (optional, default Chapter [number])
+- `title`: string (optional)
 Chapter title
 - `author`: string | string[] (optional)
 Chapter author, generates info below chapter title
-- `content`: string
-HTML String of the chapter content, image sources are downloaded
 - `excludeFromToc`: boolean (optional, default false)
 Don't list chapter in Table of Contents
 - `beforeToc`: boolean (optional, default false)
