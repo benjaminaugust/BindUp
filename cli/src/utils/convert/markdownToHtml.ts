@@ -2,19 +2,18 @@ import showdown from "showdown";
 import fs from "fs/promises";
 import printWhite from "../printWhite";
 import throwIfPathInvalid from "../throwIfPathInvalid";
+import matter = require("gray-matter");
 
 export default async (
   chapterArray: any[],
   manuscriptPath: string,
   verbose = false
 ): Promise<any> => {
-  const converter = new showdown.Converter();
-
   // We need to recursively list all folders within manuscript and create chapters for them.
 
   return Promise.all(
     chapterArray.map(async (chapter) => {
-      const convertedChapter = {
+      let convertedChapter = {
         ...chapter,
         content: "",
       };
@@ -30,9 +29,23 @@ export default async (
       try {
         throwIfPathInvalid(path, verbose);
 
-        const content = await fs.readFile(path);
+        const rawContent = await fs.readFile(path);
 
-        convertedChapter.content = converter.makeHtml(content.toString());
+        //Parse the frontmatter data and the content
+        const { content, data } = matter(rawContent.toString());
+        const converter = new showdown.Converter();
+        const htmlContent = converter.makeHtml(content);
+        if (data) {
+          convertedChapter = {
+            ...chapter,
+            content: htmlContent,
+            ...data,
+          };
+        } else {
+          convertedChapter.content = htmlContent;
+        }
+
+        // if (chapter.title === "Jasheed 1-1")
 
         if (verbose)
           printWhite(`Successfully converted ${chapter.title}" at ${path}`);

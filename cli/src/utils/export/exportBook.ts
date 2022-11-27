@@ -8,6 +8,7 @@ import getCSS from "../../book-styles/getCSS";
 import throwIfPathInvalid from "../throwIfPathInvalid";
 import printRed from "../printRed";
 import printWhite from "../printWhite";
+import matter = require("gray-matter");
 
 export default async (
   bookConfig: BookConfig,

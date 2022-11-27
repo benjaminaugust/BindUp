@@ -26,7 +26,7 @@ exports.default = (bookConfig, convertedContent, verbose = false) => __awaiter(v
         return content;
     }
     catch (err) {
-        return (0, printRed_1.default)(`Failed to render. ${bookConfig === null || bookConfig === void 0 ? void 0 : bookConfig.title}`, err);
+        return (0, printRed_1.default)(`Failed to render ${bookConfig === null || bookConfig === void 0 ? void 0 : bookConfig.title}`, err);
     }
 });
 const writeEpub = (bookConfig, content, verbose = false) => __awaiter(void 0, void 0, void 0, function* () {

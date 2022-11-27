@@ -30,6 +30,7 @@
         "epub-gen-memory": "^1.0.9",
         "fs-readdir-recursive": "^1.1.0",
         "g": "^2.0.1",
+        "gray-matter": "^4.0.3",
         "html-to-mobi": "^0.2.0",
         "is-valid-path": "^0.1.1",
         "nodemon": "^2.0.20",

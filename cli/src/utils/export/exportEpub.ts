@@ -17,7 +17,7 @@ export default async (
     await writeEpub(bookConfig, content, verbose);
     return content;
   } catch (err: any) {
-    return printRed(`Failed to render. ${bookConfig?.title}`, err);
+    return printRed(`Failed to render ${bookConfig?.title}`, err);
   }
 };
 

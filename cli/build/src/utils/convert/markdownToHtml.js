@@ -16,11 +16,11 @@ const showdown_1 = __importDefault(require("showdown"));
 const promises_1 = __importDefault(require("fs/promises"));
 const printWhite_1 = __importDefault(require("../printWhite"));
 const throwIfPathInvalid_1 = __importDefault(require("../throwIfPathInvalid"));
+const matter = require("gray-matter");
 exports.default = (chapterArray, manuscriptPath, verbose = false) => __awaiter(void 0, void 0, void 0, function* () {
-    const converter = new showdown_1.default.Converter();
     // We need to recursively list all folders within manuscript and create chapters for them.
     return Promise.all(chapterArray.map((chapter) => __awaiter(void 0, void 0, void 0, function* () {
-        const convertedChapter = Object.assign(Object.assign({}, chapter), { content: "" });
+        let convertedChapter = Object.assign(Object.assign({}, chapter), { content: "" });
         const path = `${manuscriptPath}\\manuscript\\${chapter.path}`;
         if (verbose)
             (0, printWhite_1.default)(`Converting ${chapter.title}" at ${path}" to HTML...`);
@@ -29,8 +29,18 @@ exports.default = (chapterArray, manuscriptPath, verbose = false) => __awaiter(v
         }
         try {
             (0, throwIfPathInvalid_1.default)(path, verbose);
-            const content = yield promises_1.default.readFile(path);
-            convertedChapter.content = converter.makeHtml(content.toString());
+            const rawContent = yield promises_1.default.readFile(path);
+            //Parse the frontmatter data and the content
+            const { content, data } = matter(rawContent.toString());
+            const converter = new showdown_1.default.Converter();
+            const htmlContent = converter.makeHtml(content);
+            if (data) {
+                convertedChapter = Object.assign(Object.assign(Object.assign({}, chapter), { content: htmlContent }), data);
+            }
+            else {
+                convertedChapter.content = htmlContent;
+            }
+            // if (chapter.title === "Jasheed 1-1")
             if (verbose)
                 (0, printWhite_1.default)(`Successfully converted ${chapter.title}" at ${path}`);
             return convertedChapter;

@@ -79,6 +79,45 @@ For example:
 
 `bindup render my-book-config.json`
 
+## Use Frontmatter
+
+You can also use frontmatter within your markdown files to explicitly set options. Doing so allows you to overcome the limitations of what files can be named in Unix, Mac or Windows systems.
+
+For example, say want to use periods in your chapter title:
+
+"Chapter 1.5"
+
+This would not be possible using just the file name because periods are not allowed in file names. Instead, you can add frontmatter to the top of the file where you specify the chapter:
+
+```
+---
+title: Chapter 1.5
+---
+```
+
+The title in the frontmatter overrides the filename title, meaning even if your file is called:
+
+`1~ Chapter 1-5.md`
+
+its title in your ebook will be "Chapter 1.5".
+
+### Valid frontmatter options
+
+- `title`: string (optional, default Chapter [number])
+Chapter title
+- `author`: string | string[] (optional)
+Chapter author, generates info below chapter title
+- `content`: string
+HTML String of the chapter content, image sources are downloaded
+- `excludeFromToc`: boolean (optional, default false)
+Don't list chapter in Table of Contents
+- `beforeToc`: boolean (optional, default false)
+List chapter before Table of Contents heading
+- `filename`: string (optional)
+Custom name for chapter file
+- `url`: string (optional)
+External link below chapter title
+
 ## Use bindup in node
 
 You can use bindup in your Node.js projects
